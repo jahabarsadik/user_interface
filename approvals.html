@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Approvals</title>
+
+  <!-- Bootstrap 5 + Bootstrap Icons (local) -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap-icons.min.css">
+  <!-- Page styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Sidebar: icons only by default; restore "expanded" if the user chose it -->
+  <script>
+    try { if (localStorage.getItem('sidebar') === 'expanded') document.documentElement.classList.add('sidebar-expanded'); } catch (e) {}
+  </script>
+</head>
+<body>
+
+  <!-- Top navbar -->
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+      <button type="button" class="btn sidebar-toggle me-2" id="sidebarToggle"
+              aria-controls="sidebar" aria-expanded="false" aria-label="Show menu">
+        <i class="bi bi-list"></i>
+      </button>
+      <a class="navbar-brand brand-logo me-auto" href="index.html"><img src="images/dbs-logo.jpg" alt="DBS" height="26"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topnav"
+              aria-controls="topnav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="topnav">
+        <!-- Search, centred in the top bar (js/search.js) -->
+        <form class="navbar-search my-2 my-md-0" role="search" id="navSearch" data-site-search autocomplete="off">
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input type="search" class="form-control" id="navSearchInput" placeholder="Search users and pages..." aria-label="Search users and pages">
+            <button class="btn btn-primary" type="submit">Search</button>
+          </div>
+          <div class="site-search-results list-group text-start shadow d-none" id="navSearchResults" aria-label="Search suggestions"></div>
+        </form>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person-circle"></i> <span class="js-account-name">Account</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#">Profile</a></li>
+              <li><a class="dropdown-item" href="#">Settings</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="login.html"><i class="bi bi-box-arrow-right"></i> Log out</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!--
+    Sidebar menu (the same on every page; js/layout.js adds the behaviour).
+    A sub-menu is a "sub-toggle" link plus a <div class="collapse submenu submenu-level-N">.
+    Links to "#" are placeholders.
+  -->
+  <nav class="sidebar" id="sidebar" aria-label="Main menu">
+    <ul class="nav flex-column sidebar-nav">
+      <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-house" aria-hidden="true"></i><span class="nav-label">Overview</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-bar-chart" aria-hidden="true"></i><span class="nav-label">Reports</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="index.html#users"><i class="bi bi-people" aria-hidden="true"></i><span class="nav-label">Users</span></a></li>
+      <li class="nav-item has-sub">
+        <a class="nav-link sub-toggle" href="#submenu-forms" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="submenu-forms"><i class="bi bi-ui-checks" aria-hidden="true"></i><span class="nav-label">Forms</span><i class="bi bi-chevron-down sub-caret" aria-hidden="true"></i></a>
+        <div class="collapse submenu submenu-level-1" id="submenu-forms">
+          <div class="submenu-title">Forms</div>
+          <ul class="nav flex-column">
+            <li class="nav-item has-sub">
+              <a class="nav-link sub-link sub-toggle" href="#submenu-registration" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="submenu-registration"><i class="bi bi-person-lines-fill" aria-hidden="true"></i><span class="nav-label">Registration Form</span><i class="bi bi-chevron-down sub-caret" aria-hidden="true"></i></a>
+              <div class="collapse submenu submenu-level-2" id="submenu-registration">
+                <ul class="nav flex-column">
+                  <li class="nav-item"><a class="nav-link sub-link" href="form.html"><i class="bi bi-file-earmark-text" aria-hidden="true"></i><span class="nav-label">Full Form</span></a></li>
+                  <li class="nav-item"><a class="nav-link sub-link" href="form.html#personal"><i class="bi bi-person-vcard" aria-hidden="true"></i><span class="nav-label">Personal Details</span></a></li>
+                  <li class="nav-item"><a class="nav-link sub-link" href="form.html#role-skills"><i class="bi bi-list-check" aria-hidden="true"></i><span class="nav-label">Role &amp; Skills</span></a></li>
+                  <li class="nav-item"><a class="nav-link sub-link" href="form.html#preferences"><i class="bi bi-toggles" aria-hidden="true"></i><span class="nav-label">Preferences</span></a></li>
+                  <li class="nav-item"><a class="nav-link sub-link" href="form.html#about-you"><i class="bi bi-chat-left-text" aria-hidden="true"></i><span class="nav-label">About You</span></a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item"><a class="nav-link sub-link" href="form.html#date-time"><i class="bi bi-calendar-event" aria-hidden="true"></i><span class="nav-label">Date &amp; Time</span></a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="nav-item"><a class="nav-link" href="approvals.html"><i class="bi bi-clipboard-check" aria-hidden="true"></i><span class="nav-label">My Approvals</span><span class="nav-badge badge rounded-pill text-bg-danger d-none" data-badge="pending-approvals"></span></a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-cart" aria-hidden="true"></i><span class="nav-label">Orders</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-gear" aria-hidden="true"></i><span class="nav-label">Settings</span></a></li>
+    </ul>
+  </nav>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <main class="main">
+    <div class="d-flex flex-wrap align-items-baseline border-bottom pb-2 mb-4 gap-2">
+      <h1 class="h2 mb-0">My Approvals</h1>
+      <small class="text-body-secondary">review registration forms submitted by requesters</small>
+    </div>
+
+    <!-- Status tiles: click to show only that status -->
+    <div class="row g-3 mb-4" role="group" aria-label="Show requests by status">
+      <div class="col-6 col-lg-3">
+        <button type="button" class="status-tile card w-100 text-start border-warning" data-status="Pending" aria-pressed="true">
+          <span class="card-body d-flex align-items-center gap-3">
+            <i class="bi bi-hourglass-split text-warning"></i>
+            <span><span class="tile-count h3 d-block mb-0" id="countPending">0</span><span class="text-body-secondary">Pending</span></span>
+          </span>
+        </button>
+      </div>
+      <div class="col-6 col-lg-3">
+        <button type="button" class="status-tile card w-100 text-start border-success" data-status="Approved" aria-pressed="false">
+          <span class="card-body d-flex align-items-center gap-3">
+            <i class="bi bi-check-circle text-success"></i>
+            <span><span class="tile-count h3 d-block mb-0" id="countApproved">0</span><span class="text-body-secondary">Approved</span></span>
+          </span>
+        </button>
+      </div>
+      <div class="col-6 col-lg-3">
+        <button type="button" class="status-tile card w-100 text-start border-danger" data-status="Rejected" aria-pressed="false">
+          <span class="card-body d-flex align-items-center gap-3">
+            <i class="bi bi-x-circle text-danger"></i>
+            <span><span class="tile-count h3 d-block mb-0" id="countRejected">0</span><span class="text-body-secondary">Rejected</span></span>
+          </span>
+        </button>
+      </div>
+      <div class="col-6 col-lg-3">
+        <button type="button" class="status-tile card w-100 text-start border-secondary" data-status="" aria-pressed="false">
+          <span class="card-body d-flex align-items-center gap-3">
+            <i class="bi bi-inbox text-secondary"></i>
+            <span><span class="tile-count h3 d-block mb-0" id="countAll">0</span><span class="text-body-secondary">All requests</span></span>
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Requests table -->
+    <div class="card mb-4" id="requests">
+      <div class="card-header d-flex flex-wrap gap-2 justify-content-between align-items-center">
+        <h5 class="mb-0" id="tableTitle">Pending requests</h5>
+        <!-- Shown when rows are ticked -->
+        <div class="d-none align-items-center gap-2" id="bulkBar">
+          <span class="small text-body-secondary" id="bulkCount">0 selected</span>
+          <button type="button" class="btn btn-sm btn-success" id="bulkApprove"><i class="bi bi-check-lg"></i> Approve selected</button>
+          <button type="button" class="btn btn-sm btn-outline-danger" id="bulkReject"><i class="bi bi-x-lg"></i> Reject selected</button>
+        </div>
+      </div>
+      <div class="card-body pb-0">
+        <div class="row g-2 align-items-center mb-3">
+          <div class="col-auto">
+            <label class="d-flex align-items-center gap-2 mb-0">Show
+              <select id="rqPageSize" class="form-select form-select-sm w-auto">
+                <option>5</option><option selected>10</option><option>25</option><option value="0">All</option>
+              </select>
+              entries
+            </label>
+          </div>
+          <div class="col-12 col-md-auto ms-md-auto d-flex gap-2">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text"><i class="bi bi-search"></i></span>
+              <input type="search" id="rqSearch" class="form-control" placeholder="Search requests..." aria-label="Search requests">
+            </div>
+            <button type="button" id="rqClear" class="btn btn-sm btn-outline-secondary text-nowrap">
+              <i class="bi bi-x-circle"></i> Clear filters
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle data-table" id="requestsTable">
+          <thead>
+            <tr>
+              <th class="check-col"><input class="form-check-input" type="checkbox" id="selectAll" aria-label="Select all pending requests on this page"></th>
+              <th data-key="id" class="sortable">Request</th>
+              <th data-key="requester" class="sortable">Requester</th>
+              <th data-key="department" class="sortable">Department</th>
+              <th data-key="workMode" class="sortable col-optional">Work mode</th>
+              <th data-key="period" class="sortable">Training period</th>
+              <th data-key="submitted" class="sortable">Submitted</th>
+              <th data-key="status" class="sortable">Status</th>
+              <th class="text-end">Actions</th>
+            </tr>
+            <tr class="filter-row">
+              <th></th>
+              <th><input type="text" class="form-control form-control-sm" data-filter="id" placeholder="REQ-" aria-label="Filter request number"></th>
+              <th><input type="text" class="form-control form-control-sm" data-filter="requester" placeholder="Filter name" aria-label="Filter requester"></th>
+              <th><select class="form-select form-select-sm" data-filter="department" data-exact aria-label="Filter department"><option value="">All</option></select></th>
+              <th class="col-optional"><select class="form-select form-select-sm" data-filter="workMode" data-exact aria-label="Filter work mode"><option value="">All</option></select></th>
+              <th><input type="text" class="form-control form-control-sm" data-filter="period" placeholder="e.g. 2026-11" aria-label="Filter training period"></th>
+              <th><input type="text" class="form-control form-control-sm" data-filter="submitted" placeholder="e.g. 2026-10" aria-label="Filter submitted date"></th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <!--
+            Requests: one <tr> per request (the summary shown in the table).
+            The full details of each request are in the review panel below, in an
+            <article data-request="REQ-..."> with the same number.
+            data-value on a cell is what that column sorts and filters by.
+          -->
+          <tbody id="requestRows">
+            <tr data-id="REQ-1001">
+              <td class="check-col"></td>
+              <td><a href="#" class="fw-semibold js-review">REQ-1001</a></td>
+              <td><div class="fw-semibold">Priya Sharma</div><small class="text-body-secondary requester-email">priya.sharma@example.com</small></td>
+              <td>Engineering</td>
+              <td class="col-optional">Hybrid</td>
+              <td class="small" data-value="2026-10-12T09:00">12–16 Oct 2026</td>
+              <td class="small text-nowrap" data-value="2026-09-22T09:14" title="22 Sep 2026, 09:14">22 Sep 2026</td>
+              <td><span class="badge text-bg-success">Approved</span></td>
+              <td class="text-end text-nowrap">
+                <button type="button" class="btn btn-sm btn-outline-primary js-review" title="Review" aria-label="Review REQ-1001"><i class="bi bi-eye"></i></button>
+              </td>
+            </tr>
+            <tr data-id="REQ-1002">
+              <td class="check-col"></td>
+              <td><a href="#" class="fw-semibold js-review">REQ-1002</a></td>
+              <td><div class="fw-semibold">Chen Wei</div><small class="text-body-secondary requester-email">chen.wei@example.com</small></td>
+              <td>Design</td>
+              <td class="col-optional">Remote</td>
+              <td class="small" data-value="2026-10-19T09:00">19–21 Oct 2026</td>
+              <td class="small text-nowrap" data-value="2026-09-24T14:40" title="24 Sep 2026, 14:40">24 Sep 2026</td>
+              <td><span class="badge text-bg-danger">Rejected</span></td>
+              <td class="text-end text-nowrap">
+                <button type="button" class="btn btn-sm btn-outline-primary js-review" title="Review" aria-label="Review REQ-1002"><i class="bi bi-eye"></i></button>
+              </td>
+            </tr>
+            <tr data-id="REQ-1003">
+              <td class="check-col"><input class="form-check-input row-check" type="checkbox" data-pending-only aria-label="Select REQ-1003"></td>
+              <td><a href="#" class="fw-semibold js-review">REQ-1003</a></td>
+              <td><div class="fw-semibold">Lucas Martin</div><small class="text-body-secondary requester-email">lucas.martin@example.com</small></td>
+              <td>Sales</td>
+              <td class="col-optional">Office</td>
+              <td class="small" data-value="2026-10-26T09:00">26–28 Oct 2026</td>
+              <td class="small text-nowrap" data-value="2026-09-28T08:55" title="28 Sep 2026, 08:55">28 Sep 2026</td>
+              <td><span class="badge text-bg-warning">Pending</span></td>
+              <td class="text-end text-nowrap">
+                <button type="button" class="btn btn-sm btn-outline-primary js-review" title="Review" aria-label="Review REQ-1003"><i class="bi bi-eye"></i></button>
+                <button type="button" class="btn btn-sm btn-success js-approve" title="Approve" aria-label="Approve REQ-1003" data-pending-only><i class="bi bi-check-lg"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-danger js-reject" title="Reject" aria-label="Reject REQ-1003" data-pending-only><i class="bi bi-x-lg"></i></button>
+              </td>
+            </tr>
+            <tr data-id="REQ-1004">
+              <td class="check-col"><input class="form-check-input row-check" type="checkbox" data-pending-only aria-label="Select REQ-1004"></td>
+              <td><a href="#" class="fw-semibold js-review">REQ-1004</a></td>
+              <td><div class="fw-semibold">Fatima Ali</div><small class="text-body-secondary requester-email">fatima.ali@example.com</small></td>
+              <td>Finance</td>
+              <td class="col-optional">Hybrid</td>
+              <td class="small" data-value="2026-11-02T09:00">2–6 Nov 2026</td>
+              <td class="small text-nowrap" data-value="2026-09-29T16:20" title="29 Sep 2026, 16:20">29 Sep 2026</td>
+              <td><span class="badge text-bg-warning">Pending</span></td>
+              <td class="text-end text-nowrap">
+                <button type="button" class="btn btn-sm btn-outline-primary js-review" title="Review" aria-label="Review REQ-1004"><i class="bi bi-eye"></i></button>
+                <button type="button" class="btn btn-sm btn-success js-approve" title="Approve" aria-label="Approve REQ-1004" data-pending-only><i class="bi bi-check-lg"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-danger js-reject" title="Reject" aria-label="Reject REQ-1004" data-pending-only><i class="bi bi-x-lg"></i></button>
+              </td>
+            </tr>
+            <tr data-id="REQ-1005">
+              <td class="check-col"></td>
+              <td><a href="#" class="fw-semibold js-review">REQ-1005</a></td>
+              <td><div class="fw-semibold">Omar Hassan</div><small class="text-body-secondary requester-email">omar.hassan@example.com</small></td>
+              <td>Engineering</td>
+              <td class="col-optional">Office</td>
+              <td class="small" data-value="2026-10-19T09:00">19–23 Oct 2026</td>
+              <td class="small text-nowrap" data-value="2026-09-30T10:05" title="30 Sep 2026, 10:05">30 Sep 2026</td>
+              <td><span class="badge text-bg-success">Approved</span></td>
+              <td class="text-end text-nowrap">
+                <button type="button" class="btn btn-sm btn-outline-primary js-review" title="Review" aria-label="Review REQ-1005"><i class="bi bi-eye"></i></button>
+              </td>
+            </tr>
+            <tr data-id="REQ-1006">
+              <td class="check-col"><input class="form-check-input row-check" type="checkbox" data-pending-only aria-label="Select REQ-1006"></td>
+              <td><a href="#" class="fw-semibold js-review">REQ-1006</a></td>
+              <td><div class="fw-semibold">Yuki Tanaka</div><small class="text-body-secondary requester-email">yuki.tanaka@example.com</small></td>
+              <td>Marketing</td>
+              <td class="col-optional">Hybrid</td>
+              <td class="small" data-value="2026-11-09T10:00">9–10 Nov 2026</td>
+              <td class="small text-nowrap" data-value="2026-10-01T11:48" title="1 Oct 2026, 11:48">1 Oct 2026</td>
+              <td><span class="badge text-bg-warning">Pending</span></td>
+              <td class="text-end text-nowrap">
+                <button type="button" class="btn btn-sm btn-outline-primary js-review" title="Review" aria-label="Review REQ-1006"><i class="bi bi-eye"></i></button>
+                <button type="button" class="btn btn-sm btn-success js-approve" title="Approve" aria-label="Approve REQ-1006" data-pending-only><i class="bi bi-check-lg"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-danger js-reject" title="Reject" aria-label="Reject REQ-1006" data-pending-only><i class="bi bi-x-lg"></i></button>
+              </td>
+            </tr>
+            <tr data-id="REQ-1007">
+              <td class="check-col"><input class="form-check-input row-check" type="checkbox" data-pending-only aria-label="Select REQ-1007"></td>
+              <td><a href="#" class="fw-semibold js-review">REQ-1007</a></td>
+              <td><div class="fw-semibold">Grace Kim</div><small class="text-body-secondary requester-email">grace.kim@example.com</small></td>
+              <td>Human Resources</td>
+              <td class="col-optional">Office</td>
+              <td class="small" data-value="2026-10-26T09:00">26–27 Oct 2026</td>
+              <td class="small text-nowrap" data-value="2026-10-02T09:30" title="2 Oct 2026, 09:30">2 Oct 2026</td>
+              <td><span class="badge text-bg-warning">Pending</span></td>
+              <td class="text-end text-nowrap">
+                <button type="button" class="btn btn-sm btn-outline-primary js-review" title="Review" aria-label="Review REQ-1007"><i class="bi bi-eye"></i></button>
+                <button type="button" class="btn btn-sm btn-success js-approve" title="Approve" aria-label="Approve REQ-1007" data-pending-only><i class="bi bi-check-lg"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-danger js-reject" title="Reject" aria-label="Reject REQ-1007" data-pending-only><i class="bi bi-x-lg"></i></button>
+              </td>
+            </tr>
+            <tr data-id="REQ-1008">
+              <td class="check-col"><input class="form-check-input row-check" type="checkbox" data-pending-only aria-label="Select REQ-1008"></td>
+              <td><a href="#" class="fw-semibold js-review">REQ-1008</a></td>
+              <td><div class="fw-semibold">Daniel Lopez</div><small class="text-body-secondary requester-email">daniel.lopez@example.com</small></td>
+              <td>Engineering</td>
+              <td class="col-optional">Remote</td>
+              <td class="small" data-value="2026-11-16T09:00">16–20 Nov 2026</td>
+              <td class="small text-nowrap" data-value="2026-10-02T15:12" title="2 Oct 2026, 15:12">2 Oct 2026</td>
+              <td><span class="badge text-bg-warning">Pending</span></td>
+              <td class="text-end text-nowrap">
+                <button type="button" class="btn btn-sm btn-outline-primary js-review" title="Review" aria-label="Review REQ-1008"><i class="bi bi-eye"></i></button>
+                <button type="button" class="btn btn-sm btn-success js-approve" title="Approve" aria-label="Approve REQ-1008" data-pending-only><i class="bi bi-check-lg"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-danger js-reject" title="Reject" aria-label="Reject REQ-1008" data-pending-only><i class="bi bi-x-lg"></i></button>
+              </td>
+            </tr>
+            <tr data-id="REQ-1009">
+              <td class="check-col"><input class="form-check-input row-check" type="checkbox" data-pending-only aria-label="Select REQ-1009"></td>
+              <td><a href="#" class="fw-semibold js-review">REQ-1009</a></td>
+              <td><div class="fw-semibold">Ana Silva</div><small class="text-body-secondary requester-email">ana.silva@example.com</small></td>
+              <td>Design</td>
+              <td class="col-optional">Hybrid</td>
+              <td class="small" data-value="2026-11-02T09:00">2–4 Nov 2026</td>
+              <td class="small text-nowrap" data-value="2026-10-03T10:41" title="3 Oct 2026, 10:41">3 Oct 2026</td>
+              <td><span class="badge text-bg-warning">Pending</span></td>
+              <td class="text-end text-nowrap">
+                <button type="button" class="btn btn-sm btn-outline-primary js-review" title="Review" aria-label="Review REQ-1009"><i class="bi bi-eye"></i></button>
+                <button type="button" class="btn btn-sm btn-success js-approve" title="Approve" aria-label="Approve REQ-1009" data-pending-only><i class="bi bi-check-lg"></i></button>
+                <button type="button" class="btn btn-sm btn-outline-danger js-reject" title="Reject" aria-label="Reject REQ-1009" data-pending-only><i class="bi bi-x-lg"></i></button>
+              </td>
+            </tr>
+            <tr data-id="REQ-1010">
+              <td class="check-col"></td>
+              <td><a href="#" class="fw-semibold js-review">REQ-1010</a></td>
+              <td><div class="fw-semibold">Rahul Verma</div><small class="text-body-secondary requester-email">rahul.verma@example.com</small></td>
+              <td>Sales</td>
+              <td class="col-optional">Office</td>
+              <td class="small" data-value="2026-11-09T09:00">9–11 Nov 2026</td>
+              <td class="small text-nowrap" data-value="2026-10-03T17:05" title="3 Oct 2026, 17:05">3 Oct 2026</td>
+              <td><span class="badge text-bg-danger">Rejected</span></td>
+              <td class="text-end text-nowrap">
+                <button type="button" class="btn btn-sm btn-outline-primary js-review" title="Review" aria-label="Review REQ-1010"><i class="bi bi-eye"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer d-flex flex-wrap gap-2 justify-content-between align-items-center">
+        <small id="rqInfo" class="text-body-secondary"></small>
+        <ul id="rqPager" class="pagination pagination-sm mb-0"></ul>
+      </div>
+    </div>
+
+    <footer class="text-body-secondary text-center pb-3"><small>&copy; 2026 AdminPanel · Built with Bootstrap 5</small></footer>
+  </main>
+
+  <!-- Templates for requests sent from the Registration Form (js/approvals.js fills each data-field).
+       Elements marked data-pending-only are removed once a request is decided. -->
+  <template id="requestRowTemplate">
+    <tr>
+      <td class="check-col"><input class="form-check-input row-check" type="checkbox" data-pending-only></td>
+      <td><a href="#" class="fw-semibold js-review" data-field="id"></a></td>
+      <td><div class="fw-semibold" data-field="name"></div><small class="text-body-secondary requester-email" data-field="email"></small></td>
+      <td data-field="department"></td>
+      <td class="col-optional" data-field="workMode"></td>
+      <td class="small" data-field="period"></td>
+      <td class="small text-nowrap" data-field="submittedDate"></td>
+      <td><span class="badge text-bg-warning">Pending</span></td>
+      <td class="text-end text-nowrap">
+        <button type="button" class="btn btn-sm btn-outline-primary js-review" title="Review"><i class="bi bi-eye"></i></button>
+        <button type="button" class="btn btn-sm btn-success js-approve" title="Approve" data-pending-only><i class="bi bi-check-lg"></i></button>
+        <button type="button" class="btn btn-sm btn-outline-danger js-reject" title="Reject" data-pending-only><i class="bi bi-x-lg"></i></button>
+      </td>
+    </tr>
+  </template>
+
+  <template id="requestDetailTemplate">
+    <article class="request-detail" hidden>
+      <p class="small text-body-secondary mb-3">Submitted <time data-field="submittedText"></time></p>
+      <div class="d-flex align-items-center gap-3 mb-4">
+        <i class="bi bi-person-circle fs-1 text-body-secondary" aria-hidden="true"></i>
+        <div>
+          <div class="fw-semibold" data-field="name"></div>
+          <a class="small" data-field="email"></a>
+          <div class="small text-body-secondary" data-field="phone"></div>
+        </div>
+      </div>
+      <h6 class="text-uppercase small text-body-secondary">Details</h6>
+      <dl class="row small mb-4">
+        <dt class="col-5 text-body-secondary fw-normal">Department</dt><dd class="col-7" data-field="department"></dd>
+        <dt class="col-5 text-body-secondary fw-normal">Skills</dt><dd class="col-7" data-list="skills"></dd>
+        <dt class="col-5 text-body-secondary fw-normal">Work mode</dt><dd class="col-7" data-field="workMode"></dd>
+        <dt class="col-5 text-body-secondary fw-normal">Available days</dt><dd class="col-7" data-list="days"></dd>
+        <dt class="col-5 text-body-secondary fw-normal">Notifications</dt><dd class="col-7" data-list="notifications"></dd>
+        <dt class="col-5 text-body-secondary fw-normal">Start date</dt><dd class="col-7" data-field="startDate"></dd>
+        <dt class="col-5 text-body-secondary fw-normal">Interview time</dt><dd class="col-7" data-field="interviewTime"></dd>
+        <dt class="col-5 text-body-secondary fw-normal">Orientation</dt><dd class="col-7" data-field="orientation"></dd>
+        <dt class="col-5 text-body-secondary fw-normal">Training period</dt><dd class="col-7"><span data-field="training"></span><br><small class="text-body-secondary" data-field="duration"></small></dd>
+      </dl>
+      <h6 class="text-uppercase small text-body-secondary">Bio</h6>
+      <p class="small review-bio mb-4" data-field="about"></p>
+      <h6 class="text-uppercase small text-body-secondary">History</h6>
+      <ul class="list-unstyled small mb-0 request-history"></ul>
+    </article>
+  </template>
+
+  <!-- One line in a request's History -->
+  <template id="historyItemTemplate">
+    <li class="d-flex gap-2 mb-3">
+      <i class="bi mt-1" aria-hidden="true"></i>
+      <div>
+        <div><strong class="history-action"></strong> by <span class="history-by"></span></div>
+        <small class="text-body-secondary"><time class="history-at"></time></small>
+        <div class="history-comment mt-1"></div>
+      </div>
+    </li>
+  </template>
+
+  <!-- Review panel (slides in from the right) -->
+  <div class="offcanvas offcanvas-end review-panel" tabindex="-1" id="reviewPanel" aria-labelledby="reviewTitle">
+    <div class="offcanvas-header border-bottom">
+      <div>
+        <h5 class="offcanvas-title mb-0" id="reviewTitle">Request</h5>
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <!-- Full details of every request; js/approvals.js shows the one being reviewed -->
+    <div class="offcanvas-body" id="reviewBody">
+        <article class="request-detail" data-request="REQ-1001" hidden>
+          <p class="small text-body-secondary mb-3">Submitted <time datetime="2026-09-22T09:14">22 Sep 2026, 09:14</time></p>
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <i class="bi bi-person-circle fs-1 text-body-secondary" aria-hidden="true"></i>
+            <div>
+              <div class="fw-semibold">Priya Sharma</div>
+              <a href="mailto:priya.sharma@example.com" class="small">priya.sharma@example.com</a>
+            </div>
+          </div>
+          <h6 class="text-uppercase small text-body-secondary">Details</h6>
+          <dl class="row small mb-4">
+            <dt class="col-5 text-body-secondary fw-normal">Department</dt><dd class="col-7">Engineering</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Skills</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">JavaScript</span><span class="badge text-bg-light border me-1 mb-1">Node.js</span><span class="badge text-bg-light border me-1 mb-1">SQL</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Work mode</dt><dd class="col-7">Hybrid</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Available days</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Mon</span><span class="badge text-bg-light border me-1 mb-1">Tue</span><span class="badge text-bg-light border me-1 mb-1">Wed</span><span class="badge text-bg-light border me-1 mb-1">Thu</span><span class="badge text-bg-light border me-1 mb-1">Fri</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Notifications</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Email</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Start date</dt><dd class="col-7">12 Oct 2026</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Interview time</dt><dd class="col-7">10:00</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Orientation</dt><dd class="col-7">—</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Training period</dt><dd class="col-7">12 Oct 2026, 09:00 → 16 Oct 2026, 17:00<br><small class="text-body-secondary">4 days 8 hours</small></dd>
+          </dl>
+          <h6 class="text-uppercase small text-body-secondary">Bio</h6>
+          <p class="small review-bio mb-4">Full-stack developer with 5 years of experience building internal tools.</p>
+          <h6 class="text-uppercase small text-body-secondary">History</h6>
+          <ul class="list-unstyled small mb-0 request-history">
+              <li class="d-flex gap-2 mb-3">
+                <i class="bi bi-check-circle text-success mt-1" aria-hidden="true"></i>
+                <div>
+                  <div><strong class="history-action">Approved</strong> by <span class="history-by">Aisha Khan</span></div>
+                  <small class="text-body-secondary"><time class="history-at" datetime="2026-09-23T11:02">23 Sep 2026, 11:02</time></small>
+                  <div class="history-comment mt-1">Welcome aboard.</div>
+                </div>
+              </li>
+              <li class="d-flex gap-2 mb-3">
+                <i class="bi bi-send-check text-primary mt-1" aria-hidden="true"></i>
+                <div>
+                  <div><strong class="history-action">Submitted</strong> by <span class="history-by">Priya Sharma</span></div>
+                  <small class="text-body-secondary"><time class="history-at" datetime="2026-09-22T09:14">22 Sep 2026, 09:14</time></small>
+                </div>
+              </li>
+          </ul>
+        </article>
+
+        <article class="request-detail" data-request="REQ-1002" hidden>
+          <p class="small text-body-secondary mb-3">Submitted <time datetime="2026-09-24T14:40">24 Sep 2026, 14:40</time></p>
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <i class="bi bi-person-circle fs-1 text-body-secondary" aria-hidden="true"></i>
+            <div>
+              <div class="fw-semibold">Chen Wei</div>
+              <a href="mailto:chen.wei@example.com" class="small">chen.wei@example.com</a>
+            </div>
+          </div>
+          <h6 class="text-uppercase small text-body-secondary">Details</h6>
+          <dl class="row small mb-4">
+            <dt class="col-5 text-body-secondary fw-normal">Department</dt><dd class="col-7">Design</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Skills</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">UI/UX design</span><span class="badge text-bg-light border me-1 mb-1">CSS</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Work mode</dt><dd class="col-7">Remote</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Available days</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Mon</span><span class="badge text-bg-light border me-1 mb-1">Tue</span><span class="badge text-bg-light border me-1 mb-1">Wed</span><span class="badge text-bg-light border me-1 mb-1">Thu</span><span class="badge text-bg-light border me-1 mb-1">Fri</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Notifications</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Email</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Start date</dt><dd class="col-7">19 Oct 2026</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Interview time</dt><dd class="col-7">10:00</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Orientation</dt><dd class="col-7">—</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Training period</dt><dd class="col-7">19 Oct 2026, 09:00 → 21 Oct 2026, 17:00<br><small class="text-body-secondary">2 days 8 hours</small></dd>
+          </dl>
+          <h6 class="text-uppercase small text-body-secondary">Bio</h6>
+          <p class="small review-bio mb-4">Product designer focused on accessible, mobile-first interfaces.</p>
+          <h6 class="text-uppercase small text-body-secondary">History</h6>
+          <ul class="list-unstyled small mb-0 request-history">
+              <li class="d-flex gap-2 mb-3">
+                <i class="bi bi-x-circle text-danger mt-1" aria-hidden="true"></i>
+                <div>
+                  <div><strong class="history-action">Rejected</strong> by <span class="history-by">Aisha Khan</span></div>
+                  <small class="text-body-secondary"><time class="history-at" datetime="2026-09-25T10:15">25 Sep 2026, 10:15</time></small>
+                  <div class="history-comment mt-1">Remote work is not available for this role. Please resubmit as Hybrid.</div>
+                </div>
+              </li>
+              <li class="d-flex gap-2 mb-3">
+                <i class="bi bi-send-check text-primary mt-1" aria-hidden="true"></i>
+                <div>
+                  <div><strong class="history-action">Submitted</strong> by <span class="history-by">Chen Wei</span></div>
+                  <small class="text-body-secondary"><time class="history-at" datetime="2026-09-24T14:40">24 Sep 2026, 14:40</time></small>
+                </div>
+              </li>
+          </ul>
+        </article>
+
+        <article class="request-detail" data-request="REQ-1003" hidden>
+          <p class="small text-body-secondary mb-3">Submitted <time datetime="2026-09-28T08:55">28 Sep 2026, 08:55</time></p>
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <i class="bi bi-person-circle fs-1 text-body-secondary" aria-hidden="true"></i>
+            <div>
+              <div class="fw-semibold">Lucas Martin</div>
+              <a href="mailto:lucas.martin@example.com" class="small">lucas.martin@example.com</a>
+            </div>
+          </div>
+          <h6 class="text-uppercase small text-body-secondary">Details</h6>
+          <dl class="row small mb-4">
+            <dt class="col-5 text-body-secondary fw-normal">Department</dt><dd class="col-7">Sales</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Skills</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Project management</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Work mode</dt><dd class="col-7">Office</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Available days</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Mon</span><span class="badge text-bg-light border me-1 mb-1">Tue</span><span class="badge text-bg-light border me-1 mb-1">Wed</span><span class="badge text-bg-light border me-1 mb-1">Thu</span><span class="badge text-bg-light border me-1 mb-1">Fri</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Notifications</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Email</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Start date</dt><dd class="col-7">26 Oct 2026</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Interview time</dt><dd class="col-7">10:00</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Orientation</dt><dd class="col-7">—</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Training period</dt><dd class="col-7">26 Oct 2026, 09:00 → 28 Oct 2026, 13:00<br><small class="text-body-secondary">2 days 4 hours</small></dd>
+          </dl>
+          <h6 class="text-uppercase small text-body-secondary">Bio</h6>
+          <p class="small review-bio mb-4">Account manager moving from the Singapore office.</p>
+          <h6 class="text-uppercase small text-body-secondary">History</h6>
+          <ul class="list-unstyled small mb-0 request-history">
+              <li class="d-flex gap-2 mb-3">
+                <i class="bi bi-send-check text-primary mt-1" aria-hidden="true"></i>
+                <div>
+                  <div><strong class="history-action">Submitted</strong> by <span class="history-by">Lucas Martin</span></div>
+                  <small class="text-body-secondary"><time class="history-at" datetime="2026-09-28T08:55">28 Sep 2026, 08:55</time></small>
+                </div>
+              </li>
+          </ul>
+        </article>
+
+        <article class="request-detail" data-request="REQ-1004" hidden>
+          <p class="small text-body-secondary mb-3">Submitted <time datetime="2026-09-29T16:20">29 Sep 2026, 16:20</time></p>
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <i class="bi bi-person-circle fs-1 text-body-secondary" aria-hidden="true"></i>
+            <div>
+              <div class="fw-semibold">Fatima Ali</div>
+              <a href="mailto:fatima.ali@example.com" class="small">fatima.ali@example.com</a>
+            </div>
+          </div>
+          <h6 class="text-uppercase small text-body-secondary">Details</h6>
+          <dl class="row small mb-4">
+            <dt class="col-5 text-body-secondary fw-normal">Department</dt><dd class="col-7">Finance</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Skills</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">SQL</span><span class="badge text-bg-light border me-1 mb-1">Python</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Work mode</dt><dd class="col-7">Hybrid</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Available days</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Mon</span><span class="badge text-bg-light border me-1 mb-1">Tue</span><span class="badge text-bg-light border me-1 mb-1">Wed</span><span class="badge text-bg-light border me-1 mb-1">Thu</span><span class="badge text-bg-light border me-1 mb-1">Fri</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Notifications</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Email</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Start date</dt><dd class="col-7">2 Nov 2026</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Interview time</dt><dd class="col-7">10:00</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Orientation</dt><dd class="col-7">—</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Training period</dt><dd class="col-7">2 Nov 2026, 09:00 → 6 Nov 2026, 17:00<br><small class="text-body-secondary">4 days 8 hours</small></dd>
+          </dl>
+          <h6 class="text-uppercase small text-body-secondary">Bio</h6>
+          <p class="small review-bio mb-4">Financial analyst who automates monthly reporting with Python.</p>
+          <h6 class="text-uppercase small text-body-secondary">History</h6>
+          <ul class="list-unstyled small mb-0 request-history">
+              <li class="d-flex gap-2 mb-3">
+                <i class="bi bi-send-check text-primary mt-1" aria-hidden="true"></i>
+                <div>
+                  <div><strong class="history-action">Submitted</strong> by <span class="history-by">Fatima Ali</span></div>
+                  <small class="text-body-secondary"><time class="history-at" datetime="2026-09-29T16:20">29 Sep 2026, 16:20</time></small>
+                </div>
+              </li>
+          </ul>
+        </article>
+
+        <article class="request-detail" data-request="REQ-1005" hidden>
+          <p class="small text-body-secondary mb-3">Submitted <time datetime="2026-09-30T10:05">30 Sep 2026, 10:05</time></p>
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <i class="bi bi-person-circle fs-1 text-body-secondary" aria-hidden="true"></i>
+            <div>
+              <div class="fw-semibold">Omar Hassan</div>
+              <a href="mailto:omar.hassan@example.com" class="small">omar.hassan@example.com</a>
+            </div>
+          </div>
+          <h6 class="text-uppercase small text-body-secondary">Details</h6>
+          <dl class="row small mb-4">
+            <dt class="col-5 text-body-secondary fw-normal">Department</dt><dd class="col-7">Engineering</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Skills</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Java</span><span class="badge text-bg-light border me-1 mb-1">SQL</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Work mode</dt><dd class="col-7">Office</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Available days</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Mon</span><span class="badge text-bg-light border me-1 mb-1">Tue</span><span class="badge text-bg-light border me-1 mb-1">Wed</span><span class="badge text-bg-light border me-1 mb-1">Thu</span><span class="badge text-bg-light border me-1 mb-1">Fri</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Notifications</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Email</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Start date</dt><dd class="col-7">19 Oct 2026</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Interview time</dt><dd class="col-7">10:00</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Orientation</dt><dd class="col-7">—</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Training period</dt><dd class="col-7">19 Oct 2026, 09:00 → 23 Oct 2026, 17:00<br><small class="text-body-secondary">4 days 8 hours</small></dd>
+          </dl>
+          <h6 class="text-uppercase small text-body-secondary">Bio</h6>
+          <p class="small review-bio mb-4">Backend engineer, payments platform.</p>
+          <h6 class="text-uppercase small text-body-secondary">History</h6>
+          <ul class="list-unstyled small mb-0 request-history">
+              <li class="d-flex gap-2 mb-3">
+                <i class="bi bi-check-circle text-success mt-1" aria-hidden="true"></i>
+                <div>
+                  <div><strong class="history-action">Approved</strong> by <span class="history-by">Ravi Kumar</span></div>
+                  <small class="text-body-secondary"><time class="history-at" datetime="2026-10-01T09:30">1 Oct 2026, 09:30</time></small>
+                </div>
+              </li>
+              <li class="d-flex gap-2 mb-3">
+                <i class="bi bi-send-check text-primary mt-1" aria-hidden="true"></i>
+                <div>
+                  <div><strong class="history-action">Submitted</strong> by <span class="history-by">Omar Hassan</span></div>
+                  <small class="text-body-secondary"><time class="history-at" datetime="2026-09-30T10:05">30 Sep 2026, 10:05</time></small>
+                </div>
+              </li>
+          </ul>
+        </article>
+
+        <article class="request-detail" data-request="REQ-1006" hidden>
+          <p class="small text-body-secondary mb-3">Submitted <time datetime="2026-10-01T11:48">1 Oct 2026, 11:48</time></p>
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <i class="bi bi-person-circle fs-1 text-body-secondary" aria-hidden="true"></i>
+            <div>
+              <div class="fw-semibold">Yuki Tanaka</div>
+              <a href="mailto:yuki.tanaka@example.com" class="small">yuki.tanaka@example.com</a>
+            </div>
+          </div>
+          <h6 class="text-uppercase small text-body-secondary">Details</h6>
+          <dl class="row small mb-4">
+            <dt class="col-5 text-body-secondary fw-normal">Department</dt><dd class="col-7">Marketing</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Skills</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">HTML</span><span class="badge text-bg-light border me-1 mb-1">CSS</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Work mode</dt><dd class="col-7">Hybrid</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Available days</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Mon</span><span class="badge text-bg-light border me-1 mb-1">Tue</span><span class="badge text-bg-light border me-1 mb-1">Wed</span><span class="badge text-bg-light border me-1 mb-1">Thu</span><span class="badge text-bg-light border me-1 mb-1">Fri</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Notifications</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Email</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Start date</dt><dd class="col-7">9 Nov 2026</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Interview time</dt><dd class="col-7">10:00</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Orientation</dt><dd class="col-7">—</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Training period</dt><dd class="col-7">9 Nov 2026, 10:00 → 10 Nov 2026, 16:00<br><small class="text-body-secondary">1 day 6 hours</small></dd>
+          </dl>
+          <h6 class="text-uppercase small text-body-secondary">Bio</h6>
+          <p class="small review-bio mb-4">Campaign specialist who builds landing pages.</p>
+          <h6 class="text-uppercase small text-body-secondary">History</h6>
+          <ul class="list-unstyled small mb-0 request-history">
+              <li class="d-flex gap-2 mb-3">
+                <i class="bi bi-send-check text-primary mt-1" aria-hidden="true"></i>
+                <div>
+                  <div><strong class="history-action">Submitted</strong> by <span class="history-by">Yuki Tanaka</span></div>
+                  <small class="text-body-secondary"><time class="history-at" datetime="2026-10-01T11:48">1 Oct 2026, 11:48</time></small>
+                </div>
+              </li>
+          </ul>
+        </article>
+
+        <article class="request-detail" data-request="REQ-1007" hidden>
+          <p class="small text-body-secondary mb-3">Submitted <time datetime="2026-10-02T09:30">2 Oct 2026, 09:30</time></p>
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <i class="bi bi-person-circle fs-1 text-body-secondary" aria-hidden="true"></i>
+            <div>
+              <div class="fw-semibold">Grace Kim</div>
+              <a href="mailto:grace.kim@example.com" class="small">grace.kim@example.com</a>
+            </div>
+          </div>
+          <h6 class="text-uppercase small text-body-secondary">Details</h6>
+          <dl class="row small mb-4">
+            <dt class="col-5 text-body-secondary fw-normal">Department</dt><dd class="col-7">Human Resources</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Skills</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Project management</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Work mode</dt><dd class="col-7">Office</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Available days</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Mon</span><span class="badge text-bg-light border me-1 mb-1">Tue</span><span class="badge text-bg-light border me-1 mb-1">Wed</span><span class="badge text-bg-light border me-1 mb-1">Thu</span><span class="badge text-bg-light border me-1 mb-1">Fri</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Notifications</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Email</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Start date</dt><dd class="col-7">26 Oct 2026</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Interview time</dt><dd class="col-7">10:00</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Orientation</dt><dd class="col-7">—</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Training period</dt><dd class="col-7">26 Oct 2026, 09:00 → 27 Oct 2026, 17:00<br><small class="text-body-secondary">1 day 8 hours</small></dd>
+          </dl>
+          <h6 class="text-uppercase small text-body-secondary">Bio</h6>
+          <p class="small review-bio mb-4">HR business partner for the technology division.</p>
+          <h6 class="text-uppercase small text-body-secondary">History</h6>
+          <ul class="list-unstyled small mb-0 request-history">
+              <li class="d-flex gap-2 mb-3">
+                <i class="bi bi-send-check text-primary mt-1" aria-hidden="true"></i>
+                <div>
+                  <div><strong class="history-action">Submitted</strong> by <span class="history-by">Grace Kim</span></div>
+                  <small class="text-body-secondary"><time class="history-at" datetime="2026-10-02T09:30">2 Oct 2026, 09:30</time></small>
+                </div>
+              </li>
+          </ul>
+        </article>
+
+        <article class="request-detail" data-request="REQ-1008" hidden>
+          <p class="small text-body-secondary mb-3">Submitted <time datetime="2026-10-02T15:12">2 Oct 2026, 15:12</time></p>
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <i class="bi bi-person-circle fs-1 text-body-secondary" aria-hidden="true"></i>
+            <div>
+              <div class="fw-semibold">Daniel Lopez</div>
+              <a href="mailto:daniel.lopez@example.com" class="small">daniel.lopez@example.com</a>
+            </div>
+          </div>
+          <h6 class="text-uppercase small text-body-secondary">Details</h6>
+          <dl class="row small mb-4">
+            <dt class="col-5 text-body-secondary fw-normal">Department</dt><dd class="col-7">Engineering</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Skills</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Python</span><span class="badge text-bg-light border me-1 mb-1">JavaScript</span><span class="badge text-bg-light border me-1 mb-1">Bootstrap</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Work mode</dt><dd class="col-7">Remote</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Available days</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Mon</span><span class="badge text-bg-light border me-1 mb-1">Tue</span><span class="badge text-bg-light border me-1 mb-1">Wed</span><span class="badge text-bg-light border me-1 mb-1">Thu</span><span class="badge text-bg-light border me-1 mb-1">Fri</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Notifications</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Email</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Start date</dt><dd class="col-7">16 Nov 2026</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Interview time</dt><dd class="col-7">10:00</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Orientation</dt><dd class="col-7">—</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Training period</dt><dd class="col-7">16 Nov 2026, 09:00 → 20 Nov 2026, 17:00<br><small class="text-body-secondary">4 days 8 hours</small></dd>
+          </dl>
+          <h6 class="text-uppercase small text-body-secondary">Bio</h6>
+          <p class="small review-bio mb-4">Data engineer building dashboards and pipelines.</p>
+          <h6 class="text-uppercase small text-body-secondary">History</h6>
+          <ul class="list-unstyled small mb-0 request-history">
+              <li class="d-flex gap-2 mb-3">
+                <i class="bi bi-send-check text-primary mt-1" aria-hidden="true"></i>
+                <div>
+                  <div><strong class="history-action">Submitted</strong> by <span class="history-by">Daniel Lopez</span></div>
+                  <small class="text-body-secondary"><time class="history-at" datetime="2026-10-02T15:12">2 Oct 2026, 15:12</time></small>
+                </div>
+              </li>
+          </ul>
+        </article>
+
+        <article class="request-detail" data-request="REQ-1009" hidden>
+          <p class="small text-body-secondary mb-3">Submitted <time datetime="2026-10-03T10:41">3 Oct 2026, 10:41</time></p>
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <i class="bi bi-person-circle fs-1 text-body-secondary" aria-hidden="true"></i>
+            <div>
+              <div class="fw-semibold">Ana Silva</div>
+              <a href="mailto:ana.silva@example.com" class="small">ana.silva@example.com</a>
+            </div>
+          </div>
+          <h6 class="text-uppercase small text-body-secondary">Details</h6>
+          <dl class="row small mb-4">
+            <dt class="col-5 text-body-secondary fw-normal">Department</dt><dd class="col-7">Design</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Skills</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">UI/UX design</span><span class="badge text-bg-light border me-1 mb-1">HTML</span><span class="badge text-bg-light border me-1 mb-1">CSS</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Work mode</dt><dd class="col-7">Hybrid</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Available days</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Mon</span><span class="badge text-bg-light border me-1 mb-1">Tue</span><span class="badge text-bg-light border me-1 mb-1">Wed</span><span class="badge text-bg-light border me-1 mb-1">Thu</span><span class="badge text-bg-light border me-1 mb-1">Fri</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Notifications</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Email</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Start date</dt><dd class="col-7">2 Nov 2026</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Interview time</dt><dd class="col-7">10:00</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Orientation</dt><dd class="col-7">—</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Training period</dt><dd class="col-7">2 Nov 2026, 09:00 → 4 Nov 2026, 17:00<br><small class="text-body-secondary">2 days 8 hours</small></dd>
+          </dl>
+          <h6 class="text-uppercase small text-body-secondary">Bio</h6>
+          <p class="small review-bio mb-4">Visual designer with a background in brand systems.</p>
+          <h6 class="text-uppercase small text-body-secondary">History</h6>
+          <ul class="list-unstyled small mb-0 request-history">
+              <li class="d-flex gap-2 mb-3">
+                <i class="bi bi-send-check text-primary mt-1" aria-hidden="true"></i>
+                <div>
+                  <div><strong class="history-action">Submitted</strong> by <span class="history-by">Ana Silva</span></div>
+                  <small class="text-body-secondary"><time class="history-at" datetime="2026-10-03T10:41">3 Oct 2026, 10:41</time></small>
+                </div>
+              </li>
+          </ul>
+        </article>
+
+        <article class="request-detail" data-request="REQ-1010" hidden>
+          <p class="small text-body-secondary mb-3">Submitted <time datetime="2026-10-03T17:05">3 Oct 2026, 17:05</time></p>
+          <div class="d-flex align-items-center gap-3 mb-4">
+            <i class="bi bi-person-circle fs-1 text-body-secondary" aria-hidden="true"></i>
+            <div>
+              <div class="fw-semibold">Rahul Verma</div>
+              <a href="mailto:rahul.verma@example.com" class="small">rahul.verma@example.com</a>
+            </div>
+          </div>
+          <h6 class="text-uppercase small text-body-secondary">Details</h6>
+          <dl class="row small mb-4">
+            <dt class="col-5 text-body-secondary fw-normal">Department</dt><dd class="col-7">Sales</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Skills</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Project management</span><span class="badge text-bg-light border me-1 mb-1">SQL</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Work mode</dt><dd class="col-7">Office</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Available days</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Mon</span><span class="badge text-bg-light border me-1 mb-1">Tue</span><span class="badge text-bg-light border me-1 mb-1">Wed</span><span class="badge text-bg-light border me-1 mb-1">Thu</span><span class="badge text-bg-light border me-1 mb-1">Fri</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Notifications</dt><dd class="col-7"><span class="badge text-bg-light border me-1 mb-1">Email</span></dd>
+            <dt class="col-5 text-body-secondary fw-normal">Start date</dt><dd class="col-7">9 Nov 2026</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Interview time</dt><dd class="col-7">10:00</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Orientation</dt><dd class="col-7">—</dd>
+            <dt class="col-5 text-body-secondary fw-normal">Training period</dt><dd class="col-7">9 Nov 2026, 09:00 → 11 Nov 2026, 17:00<br><small class="text-body-secondary">2 days 8 hours</small></dd>
+          </dl>
+          <h6 class="text-uppercase small text-body-secondary">Bio</h6>
+          <p class="small review-bio mb-4">Sales operations lead.</p>
+          <h6 class="text-uppercase small text-body-secondary">History</h6>
+          <ul class="list-unstyled small mb-0 request-history">
+              <li class="d-flex gap-2 mb-3">
+                <i class="bi bi-x-circle text-danger mt-1" aria-hidden="true"></i>
+                <div>
+                  <div><strong class="history-action">Rejected</strong> by <span class="history-by">Aisha Khan</span></div>
+                  <small class="text-body-secondary"><time class="history-at" datetime="2026-10-04T09:12">4 Oct 2026, 09:12</time></small>
+                  <div class="history-comment mt-1">Headcount for Sales is full this quarter.</div>
+                </div>
+              </li>
+              <li class="d-flex gap-2 mb-3">
+                <i class="bi bi-send-check text-primary mt-1" aria-hidden="true"></i>
+                <div>
+                  <div><strong class="history-action">Submitted</strong> by <span class="history-by">Rahul Verma</span></div>
+                  <small class="text-body-secondary"><time class="history-at" datetime="2026-10-03T17:05">3 Oct 2026, 17:05</time></small>
+                </div>
+              </li>
+          </ul>
+        </article>
+    </div>
+    <div class="border-top p-3" id="reviewFooter">
+      <div id="decisionForm">
+        <label for="reviewComment" class="form-label small mb-1">Comment <span class="text-body-secondary">(required when rejecting)</span></label>
+        <textarea class="form-control mb-1" id="reviewComment" rows="2" maxlength="500" placeholder="Add a note for the requester"></textarea>
+        <div class="invalid-feedback mb-1">Please give a reason for rejecting.</div>
+        <div class="d-flex gap-2 justify-content-end mt-2">
+          <button type="button" class="btn btn-outline-danger" id="rejectButton"><i class="bi bi-x-lg"></i> Reject</button>
+          <button type="button" class="btn btn-success" id="approveButton"><i class="bi bi-check-lg"></i> Approve</button>
+        </div>
+      </div>
+      <div id="decisionDone" class="d-none"></div>
+    </div>
+  </div>
+
+  <!-- Confirm approve / reject for several requests -->
+  <div class="modal fade" id="bulkModal" tabindex="-1" aria-labelledby="bulkTitle" aria-hidden="true">
+    <div class="modal-dialog">
+      <form class="modal-content" id="bulkForm" novalidate>
+        <div class="modal-header">
+          <h5 class="modal-title" id="bulkTitle">Approve requests</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p id="bulkText" class="mb-2"></p>
+          <ul class="small text-body-secondary mb-3" id="bulkList"></ul>
+          <label for="bulkComment" class="form-label small mb-1" id="bulkCommentLabel">Comment (optional)</label>
+          <textarea class="form-control" id="bulkComment" rows="2" maxlength="500"></textarea>
+          <div class="invalid-feedback">Please give a reason for rejecting.</div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-success" id="bulkConfirm">Approve</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="actionToast" class="toast border-0" role="status" aria-live="polite" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body" id="actionToastText"></div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS bundle, includes Popper (local) -->
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <!-- Approval requests (shared) -->
+  <script src="js/requests.js"></script>
+  <!-- Sidebar menu + toggle (shared by all pages) -->
+  <script src="js/layout.js"></script>
+  <!-- Search boxes with suggestions (shared by all pages) -->
+  <script src="js/search.js"></script>
+  <!-- Data table + page script -->
+  <script src="js/datatable.js"></script>
+  <script src="js/approvals.js"></script>
+</body>
+</html>

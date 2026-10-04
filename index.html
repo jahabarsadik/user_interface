@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Dashboard</title>
+
+  <!-- Bootstrap 5 + Bootstrap Icons (local) -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap-icons.min.css">
+  <!-- Page styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Sidebar: icons only by default; restore "expanded" if the user chose it -->
+  <script>
+    try { if (localStorage.getItem('sidebar') === 'expanded') document.documentElement.classList.add('sidebar-expanded'); } catch (e) {}
+  </script>
+</head>
+<body>
+
+  <!-- Top navbar -->
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+      <button type="button" class="btn sidebar-toggle me-2" id="sidebarToggle"
+              aria-controls="sidebar" aria-expanded="false" aria-label="Show menu">
+        <i class="bi bi-list"></i>
+      </button>
+      <a class="navbar-brand brand-logo me-auto" href="index.html"><img src="images/dbs-logo.jpg" alt="DBS" height="26"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topnav"
+              aria-controls="topnav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="topnav">
+        <!-- Search, centred in the top bar (js/search.js) -->
+        <form class="navbar-search my-2 my-md-0" role="search" id="navSearch" data-site-search autocomplete="off">
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input type="search" class="form-control" id="navSearchInput" placeholder="Search users and pages..." aria-label="Search users and pages">
+            <button class="btn btn-primary" type="submit">Search</button>
+          </div>
+          <div class="site-search-results list-group text-start shadow d-none" id="navSearchResults" aria-label="Search suggestions"></div>
+        </form>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#"><i class="bi bi-bell"></i> <span class="badge rounded-pill text-bg-danger">3</span></a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person-circle"></i> <span class="js-account-name">Account</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#">Profile</a></li>
+              <li><a class="dropdown-item" href="#">Settings</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="login.html"><i class="bi bi-box-arrow-right"></i> Log out</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!--
+    Sidebar menu (the same on every page; js/layout.js adds the behaviour).
+    A sub-menu is a "sub-toggle" link plus a <div class="collapse submenu submenu-level-N">.
+    Links to "#" are placeholders.
+  -->
+  <nav class="sidebar" id="sidebar" aria-label="Main menu">
+    <ul class="nav flex-column sidebar-nav">
+      <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-house" aria-hidden="true"></i><span class="nav-label">Overview</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-bar-chart" aria-hidden="true"></i><span class="nav-label">Reports</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="index.html#users"><i class="bi bi-people" aria-hidden="true"></i><span class="nav-label">Users</span></a></li>
+      <li class="nav-item has-sub">
+        <a class="nav-link sub-toggle" href="#submenu-forms" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="submenu-forms"><i class="bi bi-ui-checks" aria-hidden="true"></i><span class="nav-label">Forms</span><i class="bi bi-chevron-down sub-caret" aria-hidden="true"></i></a>
+        <div class="collapse submenu submenu-level-1" id="submenu-forms">
+          <div class="submenu-title">Forms</div>
+          <ul class="nav flex-column">
+            <li class="nav-item has-sub">
+              <a class="nav-link sub-link sub-toggle" href="#submenu-registration" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="submenu-registration"><i class="bi bi-person-lines-fill" aria-hidden="true"></i><span class="nav-label">Registration Form</span><i class="bi bi-chevron-down sub-caret" aria-hidden="true"></i></a>
+              <div class="collapse submenu submenu-level-2" id="submenu-registration">
+                <ul class="nav flex-column">
+                  <li class="nav-item"><a class="nav-link sub-link" href="form.html"><i class="bi bi-file-earmark-text" aria-hidden="true"></i><span class="nav-label">Full Form</span></a></li>
+                  <li class="nav-item"><a class="nav-link sub-link" href="form.html#personal"><i class="bi bi-person-vcard" aria-hidden="true"></i><span class="nav-label">Personal Details</span></a></li>
+                  <li class="nav-item"><a class="nav-link sub-link" href="form.html#role-skills"><i class="bi bi-list-check" aria-hidden="true"></i><span class="nav-label">Role &amp; Skills</span></a></li>
+                  <li class="nav-item"><a class="nav-link sub-link" href="form.html#preferences"><i class="bi bi-toggles" aria-hidden="true"></i><span class="nav-label">Preferences</span></a></li>
+                  <li class="nav-item"><a class="nav-link sub-link" href="form.html#about-you"><i class="bi bi-chat-left-text" aria-hidden="true"></i><span class="nav-label">About You</span></a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item"><a class="nav-link sub-link" href="form.html#date-time"><i class="bi bi-calendar-event" aria-hidden="true"></i><span class="nav-label">Date &amp; Time</span></a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="nav-item"><a class="nav-link" href="approvals.html"><i class="bi bi-clipboard-check" aria-hidden="true"></i><span class="nav-label">My Approvals</span><span class="nav-badge badge rounded-pill text-bg-danger d-none" data-badge="pending-approvals"></span></a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-cart" aria-hidden="true"></i><span class="nav-label">Orders</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-gear" aria-hidden="true"></i><span class="nav-label">Settings</span></a></li>
+    </ul>
+  </nav>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <main class="main">
+    <div class="d-flex align-items-baseline border-bottom pb-2 mb-4">
+      <h1 class="h2 mb-0">Dashboard</h1>
+      <small class="text-body-secondary ms-2">overview &amp; stats</small>
+    </div>
+
+    <!-- Search: finds users and pages as you type; Search button filters the users table (js/search.js) -->
+    <section class="page-search text-center mb-4" aria-labelledby="pageSearchTitle">
+      <h2 class="h5 mb-3" id="pageSearchTitle">What are you looking for?</h2>
+      <form id="pageSearch" class="page-search-form mx-auto position-relative" role="search" autocomplete="off" data-site-search>
+        <div class="input-group input-group-lg shadow-sm">
+          <span class="input-group-text bg-body"><i class="bi bi-search"></i></span>
+          <input type="search" id="pageSearchInput" class="form-control" placeholder="Search users, emails, roles or pages..."
+                 aria-label="Search users and pages">
+          <button class="btn btn-primary px-4" type="submit">Search</button>
+        </div>
+        <div id="pageSearchResults" class="site-search-results list-group text-start shadow d-none" aria-label="Search suggestions"></div>
+      </form>
+    </section>
+
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+      <strong>Welcome back!</strong> You have 3 new notifications.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Stat cards -->
+    <div class="row g-3 mb-4">
+      <div class="col-sm-6 col-xl-3">
+        <div class="card text-bg-primary stat-card"><div class="card-body">
+          <i class="bi bi-people float-end"></i>
+          <h3>1,284</h3><p>Users</p>
+        </div></div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="card text-bg-success stat-card"><div class="card-body">
+          <i class="bi bi-currency-dollar float-end"></i>
+          <h3>$24,560</h3><p>Revenue</p>
+        </div></div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="card text-bg-warning stat-card"><div class="card-body">
+          <i class="bi bi-cart float-end"></i>
+          <h3>342</h3><p>Orders</p>
+        </div></div>
+      </div>
+      <div class="col-sm-6 col-xl-3">
+        <div class="card text-bg-danger stat-card"><div class="card-body">
+          <i class="bi bi-exclamation-circle float-end"></i>
+          <h3>12</h3><p>Open tickets</p>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- Users data table: global search, per-column filters, sorting, paging -->
+    <div class="card mb-4" id="users">
+      <div class="card-header d-flex flex-wrap gap-2 justify-content-between align-items-center">
+        <h5 class="mb-0">Users</h5>
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addUserModal">
+          <i class="bi bi-plus-lg"></i> Add User
+        </button>
+      </div>
+      <div class="card-body pb-0">
+        <div class="row g-2 align-items-center mb-3">
+          <div class="col-auto">
+            <label class="d-flex align-items-center gap-2 mb-0">Show
+              <select id="dtPageSize" class="form-select form-select-sm w-auto">
+                <option>5</option><option selected>10</option><option>25</option><option>50</option><option value="0">All</option>
+              </select>
+              entries
+            </label>
+          </div>
+          <div class="col-12 col-md-auto ms-md-auto d-flex gap-2">
+            <div class="input-group input-group-sm">
+              <span class="input-group-text"><i class="bi bi-search"></i></span>
+              <input type="search" id="dtSearch" class="form-control" placeholder="Search all columns..." aria-label="Search all columns">
+            </div>
+            <button type="button" id="dtClear" class="btn btn-sm btn-outline-secondary text-nowrap">
+              <i class="bi bi-x-circle"></i> Clear filters
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover mb-0 align-middle data-table" id="usersTable">
+          <thead>
+            <tr>
+              <th data-key="id" data-type="number" class="sortable">#</th>
+              <th data-key="name" class="sortable">Name</th>
+              <th data-key="email" class="sortable">Email</th>
+              <th data-key="role" class="sortable">Role</th>
+              <th data-key="status" class="sortable">Status</th>
+              <th data-key="joined" class="sortable">Joined</th>
+              <th class="text-end">Actions</th>
+            </tr>
+            <tr class="filter-row">
+              <th><input type="text" class="form-control form-control-sm" data-filter="id" placeholder="#" aria-label="Filter #"></th>
+              <th><input type="text" class="form-control form-control-sm" data-filter="name" placeholder="Filter name" aria-label="Filter name"></th>
+              <th><input type="text" class="form-control form-control-sm" data-filter="email" placeholder="Filter email" aria-label="Filter email"></th>
+              <th><select class="form-select form-select-sm" data-filter="role" data-exact aria-label="Filter role"><option value="">All</option></select></th>
+              <th><select class="form-select form-select-sm" data-filter="status" data-exact aria-label="Filter status"><option value="">All</option></select></th>
+              <th><input type="text" class="form-control form-control-sm" data-filter="joined" placeholder="e.g. 2026-03" aria-label="Filter joined date"></th>
+              <th></th>
+            </tr>
+          </thead>
+          <!-- User records: edit, add or remove rows here. Columns follow the headings above. -->
+          <tbody id="userTable">
+            <tr>
+              <td>1</td>
+              <td>Aisha Khan</td>
+              <td>aisha.khan@example.com</td>
+              <td>Admin</td>
+              <td><span class="badge text-bg-success">Active</span></td>
+              <td>2025-01-01</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Aisha Khan"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Ravi Kumar</td>
+              <td>ravi.kumar@example.com</td>
+              <td>Editor</td>
+              <td><span class="badge text-bg-success">Active</span></td>
+              <td>2026-08-12</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Ravi Kumar"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Sam Lee</td>
+              <td>sam.lee@example.com</td>
+              <td>Viewer</td>
+              <td><span class="badge text-bg-secondary">Inactive</span></td>
+              <td>2026-03-23</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Sam Lee"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Maria Garcia</td>
+              <td>maria.garcia@example.com</td>
+              <td>Editor</td>
+              <td><span class="badge text-bg-warning">Pending</span></td>
+              <td>2025-10-06</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Maria Garcia"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>John Smith</td>
+              <td>john.smith@example.com</td>
+              <td>Viewer</td>
+              <td><span class="badge text-bg-success">Active</span></td>
+              <td>2026-05-17</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete John Smith"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>Priya Sharma</td>
+              <td>priya.sharma@example.com</td>
+              <td>Admin</td>
+              <td><span class="badge text-bg-success">Active</span></td>
+              <td>2026-12-28</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Priya Sharma"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>Chen Wei</td>
+              <td>chen.wei@example.com</td>
+              <td>Viewer</td>
+              <td><span class="badge text-bg-warning">Pending</span></td>
+              <td>2025-07-11</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Chen Wei"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>8</td>
+              <td>Fatima Ali</td>
+              <td>fatima.ali@example.com</td>
+              <td>Editor</td>
+              <td><span class="badge text-bg-success">Active</span></td>
+              <td>2026-02-22</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Fatima Ali"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>9</td>
+              <td>Lucas Martin</td>
+              <td>lucas.martin@example.com</td>
+              <td>Viewer</td>
+              <td><span class="badge text-bg-secondary">Inactive</span></td>
+              <td>2026-09-05</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Lucas Martin"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>10</td>
+              <td>Emma Brown</td>
+              <td>emma.brown@example.com</td>
+              <td>Editor</td>
+              <td><span class="badge text-bg-success">Active</span></td>
+              <td>2025-04-16</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Emma Brown"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>11</td>
+              <td>Arjun Nair</td>
+              <td>arjun.nair@example.com</td>
+              <td>Admin</td>
+              <td><span class="badge text-bg-success">Active</span></td>
+              <td>2026-11-27</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Arjun Nair"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>12</td>
+              <td>Sofia Rossi</td>
+              <td>sofia.rossi@example.com</td>
+              <td>Editor</td>
+              <td><span class="badge text-bg-success">Active</span></td>
+              <td>2026-06-10</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Sofia Rossi"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>13</td>
+              <td>Omar Hassan</td>
+              <td>omar.hassan@example.com</td>
+              <td>Viewer</td>
+              <td><span class="badge text-bg-success">Active</span></td>
+              <td>2025-01-21</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Omar Hassan"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>14</td>
+              <td>Yuki Tanaka</td>
+              <td>yuki.tanaka@example.com</td>
+              <td>Editor</td>
+              <td><span class="badge text-bg-secondary">Inactive</span></td>
+              <td>2026-08-04</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Yuki Tanaka"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>15</td>
+              <td>Liam Wilson</td>
+              <td>liam.wilson@example.com</td>
+              <td>Viewer</td>
+              <td><span class="badge text-bg-warning">Pending</span></td>
+              <td>2026-03-15</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Liam Wilson"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>16</td>
+              <td>Meera Iyer</td>
+              <td>meera.iyer@example.com</td>
+              <td>Admin</td>
+              <td><span class="badge text-bg-success">Active</span></td>
+              <td>2025-10-26</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Meera Iyer"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>17</td>
+              <td>David Cohen</td>
+              <td>david.cohen@example.com</td>
+              <td>Viewer</td>
+              <td><span class="badge text-bg-success">Active</span></td>
+              <td>2026-05-09</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete David Cohen"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>18</td>
+              <td>Ana Silva</td>
+              <td>ana.silva@example.com</td>
+              <td>Editor</td>
+              <td><span class="badge text-bg-warning">Pending</span></td>
+              <td>2026-12-20</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Ana Silva"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>19</td>
+              <td>Noah Johnson</td>
+              <td>noah.johnson@example.com</td>
+              <td>Viewer</td>
+              <td><span class="badge text-bg-success">Active</span></td>
+              <td>2025-07-03</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Noah Johnson"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>20</td>
+              <td>Zara Ahmed</td>
+              <td>zara.ahmed@example.com</td>
+              <td>Editor</td>
+              <td><span class="badge text-bg-secondary">Inactive</span></td>
+              <td>2026-02-14</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Zara Ahmed"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>21</td>
+              <td>Kenji Sato</td>
+              <td>kenji.sato@example.com</td>
+              <td>Admin</td>
+              <td><span class="badge text-bg-success">Active</span></td>
+              <td>2026-09-25</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Kenji Sato"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>22</td>
+              <td>Olivia Davis</td>
+              <td>olivia.davis@example.com</td>
+              <td>Editor</td>
+              <td><span class="badge text-bg-success">Active</span></td>
+              <td>2025-04-08</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Olivia Davis"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>23</td>
+              <td>Rahul Verma</td>
+              <td>rahul.verma@example.com</td>
+              <td>Viewer</td>
+              <td><span class="badge text-bg-success">Active</span></td>
+              <td>2026-11-19</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Rahul Verma"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>24</td>
+              <td>Elena Petrova</td>
+              <td>elena.petrova@example.com</td>
+              <td>Editor</td>
+              <td><span class="badge text-bg-success">Active</span></td>
+              <td>2026-06-02</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Elena Petrova"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>25</td>
+              <td>Mohammed Saleh</td>
+              <td>mohammed.saleh@example.com</td>
+              <td>Viewer</td>
+              <td><span class="badge text-bg-secondary">Inactive</span></td>
+              <td>2025-01-13</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Mohammed Saleh"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>26</td>
+              <td>Grace Kim</td>
+              <td>grace.kim@example.com</td>
+              <td>Admin</td>
+              <td><span class="badge text-bg-warning">Pending</span></td>
+              <td>2026-08-24</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Grace Kim"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>27</td>
+              <td>Daniel Lopez</td>
+              <td>daniel.lopez@example.com</td>
+              <td>Viewer</td>
+              <td><span class="badge text-bg-success">Active</span></td>
+              <td>2026-03-07</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Daniel Lopez"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>28</td>
+              <td>Nisha Patel</td>
+              <td>nisha.patel@example.com</td>
+              <td>Editor</td>
+              <td><span class="badge text-bg-success">Active</span></td>
+              <td>2025-10-18</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Nisha Patel"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>29</td>
+              <td>Ethan Clark</td>
+              <td>ethan.clark@example.com</td>
+              <td>Viewer</td>
+              <td><span class="badge text-bg-warning">Pending</span></td>
+              <td>2026-05-01</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Ethan Clark"><i class="bi bi-trash"></i></button></td>
+            </tr>
+            <tr>
+              <td>30</td>
+              <td>Leila Haddad</td>
+              <td>leila.haddad@example.com</td>
+              <td>Editor</td>
+              <td><span class="badge text-bg-success">Active</span></td>
+              <td>2026-12-12</td>
+              <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete Leila Haddad"><i class="bi bi-trash"></i></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card-footer d-flex flex-wrap gap-2 justify-content-between align-items-center">
+        <small id="dtInfo" class="text-body-secondary"></small>
+        <ul id="dtPager" class="pagination pagination-sm mb-0"></ul>
+      </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <!-- Side widgets -->
+      <div class="col-lg-6">
+        <div class="card h-100">
+          <div class="card-header"><h5 class="mb-0">Project Progress</h5></div>
+          <div class="card-body">
+            <p class="mb-1">Website redesign</p>
+            <div class="progress mb-3" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar bg-success" style="width:80%">80%</div>
+            </div>
+            <p class="mb-1">Mobile app</p>
+            <div class="progress mb-3" role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar bg-info progress-bar-striped progress-bar-animated" style="width:55%">55%</div>
+            </div>
+            <p class="mb-1">API migration</p>
+            <div class="progress" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+              <div class="progress-bar bg-warning" style="width:30%">30%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="card h-100">
+          <div class="card-header"><h5 class="mb-0">Recent Activity</h5></div>
+          <div class="list-group list-group-flush">
+            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between">New order #1042 <span class="badge text-bg-light">2m</span></a>
+            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between">Maria signed up <span class="badge text-bg-light">15m</span></a>
+            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between">Server backup done <span class="badge text-bg-light">1h</span></a>
+            <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between">Ticket #88 closed <span class="badge text-bg-light">3h</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs with settings form -->
+    <div class="card mb-4">
+      <div class="card-body">
+        <ul class="nav nav-tabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tab-profile" type="button" role="tab">Profile</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-notify" type="button" role="tab">Notifications</button>
+          </li>
+        </ul>
+        <div class="tab-content pt-4">
+          <div class="tab-pane fade show active" id="tab-profile" role="tabpanel">
+            <form id="profileForm" novalidate>
+              <div class="row mb-3">
+                <label class="col-sm-2 col-form-label" for="pName">Full name</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="pName" placeholder="Your name" required>
+                  <div class="invalid-feedback">Please enter your name.</div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-2 col-form-label" for="pEmail">Email</label>
+                <div class="col-sm-6">
+                  <input type="email" class="form-control" id="pEmail" placeholder="you@example.com" required>
+                  <div class="invalid-feedback">Please enter a valid email.</div>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-2 col-form-label" for="pTz">Timezone</label>
+                <div class="col-sm-6">
+                  <select class="form-select" id="pTz">
+                    <option>UTC</option><option>Asia/Kolkata</option><option>Europe/London</option><option>America/New_York</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6 offset-sm-2">
+                  <button type="submit" class="btn btn-success">Save changes</button>
+                  <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="tab-pane fade" id="tab-notify" role="tabpanel">
+            <div class="form-check form-switch mb-2">
+              <input class="form-check-input" type="checkbox" id="n1" checked>
+              <label class="form-check-label" for="n1">Email me about new orders</label>
+            </div>
+            <div class="form-check form-switch mb-2">
+              <input class="form-check-input" type="checkbox" id="n2">
+              <label class="form-check-label" for="n2">Weekly summary report</label>
+            </div>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" id="n3" checked>
+              <label class="form-check-label" for="n3">Security alerts</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="text-body-secondary text-center pb-3"><small>&copy; 2026 AdminPanel · Built with Bootstrap 5</small></footer>
+  </main>
+
+  <!-- Row used by "Add User": js/app.js copies it and fills each data-field -->
+  <template id="userRowTemplate">
+    <tr>
+      <td data-field="id"></td>
+      <td data-field="name"></td>
+      <td data-field="email"></td>
+      <td data-field="role"></td>
+      <td><span class="badge text-bg-warning" data-field="status">Pending</span></td>
+      <td data-field="joined"></td>
+      <td class="text-end"><button type="button" class="btn btn-sm btn-outline-danger js-delete" aria-label="Delete"><i class="bi bi-trash"></i></button></td>
+    </tr>
+  </template>
+
+  <!-- Add user modal -->
+  <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserTitle" aria-hidden="true">
+    <div class="modal-dialog">
+      <form class="modal-content" id="addUserForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addUserTitle">Add User</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label" for="uName">Name</label>
+            <input type="text" class="form-control" id="uName" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="uEmail">Email</label>
+            <input type="email" class="form-control" id="uEmail" required>
+          </div>
+          <div>
+            <label class="form-label" for="uRole">Role</label>
+            <select class="form-select" id="uRole"><option>Admin</option><option>Editor</option><option selected>Viewer</option></select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast for save confirmation -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="saveToast" class="toast text-bg-success border-0" role="status" aria-live="polite" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body"><i class="bi bi-check-circle"></i> Profile saved.</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS bundle, includes Popper (local) -->
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <!-- Approval requests (shared) -->
+  <script src="js/requests.js"></script>
+  <!-- Sidebar menu + toggle (shared by all pages) -->
+  <script src="js/layout.js"></script>
+  <!-- Search boxes with suggestions (shared by all pages) -->
+  <script src="js/search.js"></script>
+  <!-- Data table + page script -->
+  <script src="js/datatable.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

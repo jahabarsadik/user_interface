@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Registration Form</title>
+
+  <!-- Bootstrap 5 + Bootstrap Icons (local) -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap-icons.min.css">
+  <!-- Page styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Sidebar: icons only by default; restore "expanded" if the user chose it -->
+  <script>
+    try { if (localStorage.getItem('sidebar') === 'expanded') document.documentElement.classList.add('sidebar-expanded'); } catch (e) {}
+  </script>
+</head>
+<body>
+
+  <!-- Top navbar -->
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+      <button type="button" class="btn sidebar-toggle me-2" id="sidebarToggle"
+              aria-controls="sidebar" aria-expanded="false" aria-label="Show menu">
+        <i class="bi bi-list"></i>
+      </button>
+      <a class="navbar-brand brand-logo me-auto" href="index.html"><img src="images/dbs-logo.jpg" alt="DBS" height="26"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topnav"
+              aria-controls="topnav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="topnav">
+        <!-- Search, centred in the top bar (js/search.js) -->
+        <form class="navbar-search my-2 my-md-0" role="search" id="navSearch" data-site-search autocomplete="off">
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input type="search" class="form-control" id="navSearchInput" placeholder="Search users and pages..." aria-label="Search users and pages">
+            <button class="btn btn-primary" type="submit">Search</button>
+          </div>
+          <div class="site-search-results list-group text-start shadow d-none" id="navSearchResults" aria-label="Search suggestions"></div>
+        </form>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-person-circle"></i> <span class="js-account-name">Account</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="#">Profile</a></li>
+              <li><a class="dropdown-item" href="#">Settings</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="login.html"><i class="bi bi-box-arrow-right"></i> Log out</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!--
+    Sidebar menu (the same on every page; js/layout.js adds the behaviour).
+    A sub-menu is a "sub-toggle" link plus a <div class="collapse submenu submenu-level-N">.
+    Links to "#" are placeholders.
+  -->
+  <nav class="sidebar" id="sidebar" aria-label="Main menu">
+    <ul class="nav flex-column sidebar-nav">
+      <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-house" aria-hidden="true"></i><span class="nav-label">Overview</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-bar-chart" aria-hidden="true"></i><span class="nav-label">Reports</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="index.html#users"><i class="bi bi-people" aria-hidden="true"></i><span class="nav-label">Users</span></a></li>
+      <li class="nav-item has-sub">
+        <a class="nav-link sub-toggle" href="#submenu-forms" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="submenu-forms"><i class="bi bi-ui-checks" aria-hidden="true"></i><span class="nav-label">Forms</span><i class="bi bi-chevron-down sub-caret" aria-hidden="true"></i></a>
+        <div class="collapse submenu submenu-level-1" id="submenu-forms">
+          <div class="submenu-title">Forms</div>
+          <ul class="nav flex-column">
+            <li class="nav-item has-sub">
+              <a class="nav-link sub-link sub-toggle" href="#submenu-registration" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="submenu-registration"><i class="bi bi-person-lines-fill" aria-hidden="true"></i><span class="nav-label">Registration Form</span><i class="bi bi-chevron-down sub-caret" aria-hidden="true"></i></a>
+              <div class="collapse submenu submenu-level-2" id="submenu-registration">
+                <ul class="nav flex-column">
+                  <li class="nav-item"><a class="nav-link sub-link" href="form.html"><i class="bi bi-file-earmark-text" aria-hidden="true"></i><span class="nav-label">Full Form</span></a></li>
+                  <li class="nav-item"><a class="nav-link sub-link" href="form.html#personal"><i class="bi bi-person-vcard" aria-hidden="true"></i><span class="nav-label">Personal Details</span></a></li>
+                  <li class="nav-item"><a class="nav-link sub-link" href="form.html#role-skills"><i class="bi bi-list-check" aria-hidden="true"></i><span class="nav-label">Role &amp; Skills</span></a></li>
+                  <li class="nav-item"><a class="nav-link sub-link" href="form.html#preferences"><i class="bi bi-toggles" aria-hidden="true"></i><span class="nav-label">Preferences</span></a></li>
+                  <li class="nav-item"><a class="nav-link sub-link" href="form.html#about-you"><i class="bi bi-chat-left-text" aria-hidden="true"></i><span class="nav-label">About You</span></a></li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item"><a class="nav-link sub-link" href="form.html#date-time"><i class="bi bi-calendar-event" aria-hidden="true"></i><span class="nav-label">Date &amp; Time</span></a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="nav-item"><a class="nav-link" href="approvals.html"><i class="bi bi-clipboard-check" aria-hidden="true"></i><span class="nav-label">My Approvals</span><span class="nav-badge badge rounded-pill text-bg-danger d-none" data-badge="pending-approvals"></span></a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-cart" aria-hidden="true"></i><span class="nav-label">Orders</span></a></li>
+      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-gear" aria-hidden="true"></i><span class="nav-label">Settings</span></a></li>
+    </ul>
+  </nav>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <main class="main">
+    <div class="d-flex align-items-baseline border-bottom pb-2 mb-4">
+      <h1 class="h2 mb-0">Registration Form</h1>
+      <small class="text-body-secondary ms-2">fields marked <span class="text-danger">*</span> are required</small>
+    </div>
+
+    <form id="regForm" novalidate>
+
+      <!-- 1. Text inputs -->
+      <div class="card mb-4" id="personal">
+        <div class="card-header"><h5 class="mb-0"><i class="bi bi-person-badge"></i> Personal details</h5></div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="firstName" class="form-label required">First name</label>
+              <input type="text" class="form-control" id="firstName" name="firstName" required>
+              <div class="invalid-feedback">Please enter your first name.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="lastName" class="form-label required">Last name</label>
+              <input type="text" class="form-control" id="lastName" name="lastName" required>
+              <div class="invalid-feedback">Please enter your last name.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="email" class="form-label required">Email</label>
+              <div class="input-group has-validation">
+                <span class="input-group-text">@</span>
+                <input type="email" class="form-control" id="email" name="email" placeholder="you@example.com" required>
+                <div class="invalid-feedback">Please enter a valid email address.</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="phone" class="form-label">Phone</label>
+              <input type="tel" class="form-control" id="phone" name="phone" placeholder="+91 98765 43210"
+                     pattern="[0-9+\-\s\(\)]{7,20}">
+              <div class="invalid-feedback">Use digits, spaces, +, - or brackets only.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Dropdowns -->
+      <div class="card mb-4" id="role-skills">
+        <div class="card-header"><h5 class="mb-0"><i class="bi bi-list-check"></i> Role &amp; skills</h5></div>
+        <div class="card-body">
+          <div class="row g-3">
+            <!-- Single-select dropdown -->
+            <div class="col-md-6">
+              <label for="department" class="form-label required">Department <small class="text-body-secondary">(type to search)</small></label>
+              <select class="form-select" id="department" name="department" required data-searchable>
+                <option value="" selected disabled>Choose a department...</option>
+                <option>Engineering</option>
+                <option>Design</option>
+                <option>Marketing</option>
+                <option>Sales</option>
+                <option>Human Resources</option>
+                <option>Finance</option>
+              </select>
+              <div class="invalid-feedback">Please choose a department.</div>
+            </div>
+
+            <!-- Multi-select dropdown: a real <select multiple>, shown as a checkbox dropdown by js/form.js -->
+            <div class="col-md-6">
+              <label for="skills" class="form-label required">Skills <small class="text-body-secondary">(choose one or more)</small></label>
+              <select class="form-select" id="skills" name="skills" multiple required data-multiselect
+                      data-placeholder="Choose skills..." data-min="1">
+                <optgroup label="Front end">
+                  <option>HTML</option>
+                  <option>CSS</option>
+                  <option>JavaScript</option>
+                  <option>Bootstrap</option>
+                </optgroup>
+                <optgroup label="Back end">
+                  <option>Python</option>
+                  <option>Java</option>
+                  <option>Node.js</option>
+                  <option>SQL</option>
+                </optgroup>
+                <optgroup label="Other">
+                  <option>Project management</option>
+                  <option>UI/UX design</option>
+                </optgroup>
+              </select>
+              <div class="invalid-feedback">Please choose at least one skill.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Toggles -->
+      <div class="card mb-4" id="preferences">
+        <div class="card-header"><h5 class="mb-0"><i class="bi bi-toggles"></i> Preferences</h5></div>
+        <div class="card-body">
+          <div class="row g-4">
+            <!-- Toggle switches (checkboxes) -->
+            <div class="col-md-6">
+              <p class="form-label">Notifications</p>
+              <div class="form-check form-switch mb-2">
+                <input class="form-check-input" type="checkbox" role="switch" id="notifyEmail" name="notifications" value="Email" checked>
+                <label class="form-check-label" for="notifyEmail">Email notifications</label>
+              </div>
+              <div class="form-check form-switch mb-2">
+                <input class="form-check-input" type="checkbox" role="switch" id="notifySms" name="notifications" value="SMS">
+                <label class="form-check-label" for="notifySms">SMS notifications</label>
+              </div>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="notifyNews" name="notifications" value="Newsletter">
+                <label class="form-check-label" for="notifyNews">Monthly newsletter</label>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <!-- Toggle buttons: pick one (radio) -->
+              <p class="form-label required" id="workModeLabel">Work mode</p>
+              <div class="btn-group mb-1" role="group" aria-labelledby="workModeLabel">
+                <input type="radio" class="btn-check" name="workMode" id="wmOffice" value="Office" required>
+                <label class="btn btn-outline-primary" for="wmOffice"><i class="bi bi-building"></i> Office</label>
+                <input type="radio" class="btn-check" name="workMode" id="wmHybrid" value="Hybrid">
+                <label class="btn btn-outline-primary" for="wmHybrid"><i class="bi bi-shuffle"></i> Hybrid</label>
+                <input type="radio" class="btn-check" name="workMode" id="wmRemote" value="Remote">
+                <label class="btn btn-outline-primary" for="wmRemote"><i class="bi bi-house"></i> Remote</label>
+              </div>
+              <div class="invalid-feedback" id="workModeFeedback">Please choose a work mode.</div>
+
+              <!-- Toggle buttons: pick many (checkbox) -->
+              <p class="form-label mt-3" id="daysLabel">Available days</p>
+              <div class="d-flex flex-wrap gap-2" role="group" aria-labelledby="daysLabel">
+                <input type="checkbox" class="btn-check" name="days" id="dMon" value="Mon" checked><label class="btn btn-sm btn-outline-success" for="dMon">Mon</label>
+                <input type="checkbox" class="btn-check" name="days" id="dTue" value="Tue" checked><label class="btn btn-sm btn-outline-success" for="dTue">Tue</label>
+                <input type="checkbox" class="btn-check" name="days" id="dWed" value="Wed" checked><label class="btn btn-sm btn-outline-success" for="dWed">Wed</label>
+                <input type="checkbox" class="btn-check" name="days" id="dThu" value="Thu" checked><label class="btn btn-sm btn-outline-success" for="dThu">Thu</label>
+                <input type="checkbox" class="btn-check" name="days" id="dFri" value="Fri" checked><label class="btn btn-sm btn-outline-success" for="dFri">Fri</label>
+                <input type="checkbox" class="btn-check" name="days" id="dSat" value="Sat"><label class="btn btn-sm btn-outline-success" for="dSat">Sat</label>
+                <input type="checkbox" class="btn-check" name="days" id="dSun" value="Sun"><label class="btn btn-sm btn-outline-success" for="dSun">Sun</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Date & time -->
+      <div class="card mb-4" id="date-time">
+        <div class="card-header"><h5 class="mb-0"><i class="bi bi-calendar-event"></i> Date &amp; time</h5></div>
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label for="startDate" class="form-label required">Start date</label>
+              <input type="date" class="form-control" id="startDate" name="startDate" required>
+              <div class="invalid-feedback">Please pick a start date (today or later).</div>
+            </div>
+            <div class="col-md-4">
+              <label for="interviewTime" class="form-label required">Preferred interview time</label>
+              <input type="time" class="form-control" id="interviewTime" name="interviewTime" min="09:00" max="18:00" step="900" required>
+              <div class="form-text">Between 09:00 and 18:00.</div>
+              <div class="invalid-feedback">Please pick a time between 09:00 and 18:00.</div>
+            </div>
+            <div class="col-md-4">
+              <label for="orientation" class="form-label">Orientation (date &amp; time)</label>
+              <input type="datetime-local" class="form-control" id="orientation" name="orientation">
+              <div class="invalid-feedback">Orientation must be on or after the start date.</div>
+            </div>
+
+            <!-- Start + end date & time in one field (js/daterangepicker.js) -->
+            <div class="col-lg-8">
+              <label for="trainingPeriod" class="form-label required">Training period (start &amp; end)</label>
+              <div class="input-group has-validation">
+                <span class="input-group-text"><i class="bi bi-calendar-range"></i></span>
+                <input type="text" class="form-control" id="trainingPeriod" required autocomplete="off"
+                       placeholder="Select start and end date &amp; time"
+                       data-daterange data-min="today"
+                       data-start-name="trainingStart" data-end-name="trainingEnd"
+                       data-start-time="09:00" data-end-time="17:00">
+                <div class="invalid-feedback">Please choose a start and end date &amp; time.</div>
+              </div>
+              <div class="form-text" id="trainingPeriodHelp">Click a start day, then an end day, set the times and press Apply.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Textarea -->
+      <div class="card mb-4" id="about-you">
+        <div class="card-header"><h5 class="mb-0"><i class="bi bi-chat-left-text"></i> About you</h5></div>
+        <div class="card-body">
+          <label for="about" class="form-label required">Short bio</label>
+          <textarea class="form-control" id="about" name="about" rows="5" minlength="20" maxlength="500"
+                    placeholder="Tell us a little about yourself (20–500 characters)" required></textarea>
+          <div class="invalid-feedback">Please write at least 20 characters.</div>
+          <div class="form-text text-end" id="aboutCount">0 / 500</div>
+
+          <div class="form-check mt-3">
+            <input class="form-check-input" type="checkbox" id="agree" name="agree" required>
+            <label class="form-check-label required" for="agree">I confirm the information above is correct</label>
+            <div class="invalid-feedback">You must confirm before submitting.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2 mb-4">
+        <button type="submit" class="btn btn-primary"><i class="bi bi-send"></i> Submit</button>
+        <button type="reset" class="btn btn-outline-secondary"><i class="bi bi-arrow-counterclockwise"></i> Reset</button>
+      </div>
+    </form>
+
+    <footer class="text-body-secondary text-center pb-3"><small>&copy; 2026 AdminPanel · Built with Bootstrap 5</small></footer>
+  </main>
+
+  <!-- Submitted values -->
+  <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="resultTitle"><i class="bi bi-check2-circle text-success"></i> Form submitted for approval</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-success small" id="resultNote" role="status"></div>
+          <table class="table table-sm mb-0"><tbody id="resultBody"></tbody></table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS bundle, includes Popper (local) -->
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <!-- Approval requests (shared) -->
+  <script src="js/requests.js"></script>
+  <!-- Sidebar menu + toggle (shared by all pages) -->
+  <script src="js/layout.js"></script>
+  <!-- Search boxes with suggestions (shared by all pages) -->
+  <script src="js/search.js"></script>
+  <!-- Multi-select, type-to-search select, date range picker + page script -->
+  <script src="js/multiselect.js"></script>
+  <script src="js/searchselect.js"></script>
+  <script src="js/daterangepicker.js"></script>
+  <script src="js/form.js"></script>
+</body>
+</html>
