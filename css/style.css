@@ -215,3 +215,77 @@ p.form-label { margin-bottom: .5rem; }
 #requestsTable .filter-row .form-control, #requestsTable .filter-row .form-select { min-width: 70px; }
 #requestsTable thead th.sortable { white-space: normal; }
 #requestsTable .requester-email { word-break: break-all; }
+
+/* ---- Header menu (index.html): menu across the top, in the style of dbs.com.sg ---------- */
+.top-nav-layout { --navbar-h: 96px; --brand-red: #ff3333; padding-top: 96px; }
+.top-nav-layout .main { margin-left: auto; margin-right: auto; max-width: 1320px; }
+
+.site-header { background: #fff; box-shadow: 0 1px 0 rgba(0,0,0,.08), 0 2px 8px rgba(0,0,0,.04); }
+
+/* Thin dark bar on top */
+.utility-bar { background: #222; height: 32px; font-size: .8125rem; }
+.utility-bar .container-xl { height: 100%; }
+.utility-link { color: rgba(255,255,255,.85); text-decoration: none; }
+.utility-link:hover, .utility-link:focus-visible, .utility-link.show { color: #fff; }
+.utility-bar .badge { font-size: .65rem; }
+
+/* White bar: logo, menu, search, button */
+.main-nav { padding: 0; }
+.main-nav .container-xl { min-height: 64px; }
+.header-logo { height: 30px; width: auto; display: block; }
+.top-menu .nav-link {
+  color: #333; font-weight: 500; padding: 0 14px !important; height: 64px;
+  display: flex; align-items: center; gap: 6px; white-space: nowrap;
+}
+.top-menu .nav-link:hover, .top-menu .nav-link:focus-visible,
+.top-menu .nav-link.show, .top-menu .nav-link.active { background: #f0f0f0; color: #000; }
+.top-menu .nav-link.active { font-weight: 600; box-shadow: inset 0 -3px 0 var(--brand-red); }
+.top-menu .dropdown-toggle::after { margin-left: 2px; }
+
+/* Forms: wide panel under the header with links in columns */
+.top-menu .mega-dropdown { position: static; }
+.top-menu .mega-menu {
+  left: 0; right: 0; top: 100%; margin-top: 0; padding: 28px 0;
+  border: 0; border-top: 1px solid #e9e9e9; border-radius: 0;
+  box-shadow: 0 16px 24px rgba(0,0,0,.12);
+}
+.mega-heading {
+  font-size: .75rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--brand-red); padding-bottom: 8px; margin-bottom: 8px; border-bottom: 1px solid #e9e9e9;
+}
+.mega-links .dropdown-item { padding: 8px 10px; border-radius: 6px; color: #333; display: flex; align-items: center; gap: 10px; }
+.mega-links .dropdown-item .bi { color: #777; }
+.mega-links .dropdown-item:hover, .mega-links .dropdown-item:focus-visible { background: #f0f0f0; color: #000; }
+.mega-links .dropdown-item.active { background: #fdeaea; color: #000; font-weight: 600; }
+.mega-links .dropdown-item.active .bi { color: var(--brand-red); }
+.mega-card { background: #f6f6f6; border-radius: 8px; padding: 20px; }
+
+/* Search pill and the red button on the right */
+.header-search { position: relative; }
+.header-search .form-control { width: 170px; border-radius: 999px 0 0 999px; transition: width .2s; }
+.header-search .form-control:focus { width: 230px; }
+.header-search .btn { border-radius: 0 999px 999px 0; }
+.header-search .site-search-results { left: auto; right: 0; min-width: 340px; }
+.btn-header-action {
+  background: var(--brand-red); color: #fff; border: 0; border-radius: 0; font-weight: 600;
+  height: 64px; display: flex; align-items: center; gap: 6px; padding: 0 22px;
+}
+.btn-header-action:hover, .btn-header-action:focus-visible { background: #e02020; color: #fff; }
+
+/* Below 992px: the menu folds into the ☰ button and opens as a list */
+@media (max-width: 991.98px) {
+  .site-header .navbar-collapse { max-height: calc(100vh - 96px); overflow-y: auto; padding-bottom: 12px; }
+  .top-menu .nav-link { height: auto; padding: 12px 8px !important; }
+  .top-menu .nav-link.active { box-shadow: inset 3px 0 0 var(--brand-red); }
+  .top-menu .mega-menu { position: static; box-shadow: none; border-top: 0; padding: 4px 0 8px 16px; }
+  .top-menu .mega-menu .container-xl { padding: 0; }
+  .mega-card { display: none; }
+  .header-search .form-control, .header-search .form-control:focus { width: 100%; }
+  .header-search .site-search-results { left: 0; min-width: 0; }
+  .btn-header-action { height: auto; padding: 10px 16px; border-radius: 6px; display: inline-flex; }
+}
+/* Keyboard focus in the header: a red inset ring instead of Bootstrap's blue glow */
+.top-menu .nav-link:focus-visible, .mega-links .dropdown-item:focus-visible, .btn-header-action:focus-visible {
+  outline: 0; box-shadow: inset 0 0 0 2px var(--brand-red);
+}
+.top-menu .nav-link.active:focus-visible { box-shadow: inset 0 0 0 2px var(--brand-red), inset 0 -3px 0 var(--brand-red); }

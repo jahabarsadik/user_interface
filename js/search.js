@@ -27,23 +27,36 @@
     return escapeHtml(text.slice(0, i)) + '<mark class="p-0">' + escapeHtml(text.slice(i, i + q.length)) + '</mark>' + escapeHtml(text.slice(i + q.length));
   }
 
-  // Pages come from the sidebar menu in the page's HTML, e.g. "Preferences" in Forms › Registration Form
+  // Pages come from the menu in the page's HTML (sidebar or header), e.g. "Preferences" in Forms › Registration Form
   function allPages() {
     function label(link) {
       var el = link.querySelector('.nav-label');
       return el ? el.textContent.trim() : '';
     }
+    function icon(a) {
+      var el = a.querySelector('.bi');
+      return el ? (el.className.match(/bi-([\w-]+)/) || [])[1] : 'file-earmark';
+    }
+    function usable(a) { return a.getAttribute('href') !== '#'; }
+
+    // Header menu (index.html): links marked data-menu-link, with data-trail for the section
+    var headerLinks = document.querySelectorAll('.top-menu [data-menu-link]');
+    if (headerLinks.length) {
+      return Array.prototype.filter.call(headerLinks, usable).map(function (a) {
+        return { label: label(a), href: a.getAttribute('href'), icon: icon(a) || 'file-earmark', trail: a.dataset.trail || '' };
+      });
+    }
+
+    // Sidebar menu: the section is the sub-menu(s) the link sits in
     var links = document.querySelectorAll('#sidebar a.nav-link:not(.sub-toggle)');
-    return Array.prototype.filter.call(links, function (a) { return a.getAttribute('href') !== '#'; })
+    return Array.prototype.filter.call(links, usable)
       .map(function (a) {
         var trail = [];
         for (var sub = a.closest('.submenu'); sub; sub = sub.parentElement.closest('.submenu')) {
           var parent = document.querySelector('[aria-controls="' + sub.id + '"]');
           if (parent) trail.unshift(label(parent));
         }
-        var icon = a.querySelector('.bi');
-        var iconName = icon ? (icon.className.match(/bi-([\w-]+)/) || [])[1] : 'file-earmark';
-        return { label: label(a), href: a.getAttribute('href'), icon: iconName, trail: trail.join(' › ') };
+        return { label: label(a), href: a.getAttribute('href'), icon: icon(a), trail: trail.join(' › ') };
       });
   }
 

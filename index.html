@@ -10,92 +10,98 @@
   <link rel="stylesheet" href="css/bootstrap-icons.min.css">
   <!-- Page styles -->
   <link rel="stylesheet" href="css/style.css">
-  <!-- Sidebar: icons only by default; restore "expanded" if the user chose it -->
-  <script>
-    try { if (localStorage.getItem('sidebar') === 'expanded') document.documentElement.classList.add('sidebar-expanded'); } catch (e) {}
-  </script>
 </head>
-<body>
-
-  <!-- Top navbar -->
-  <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-    <div class="container-fluid">
-      <button type="button" class="btn sidebar-toggle me-2" id="sidebarToggle"
-              aria-controls="sidebar" aria-expanded="false" aria-label="Show menu">
-        <i class="bi bi-list"></i>
-      </button>
-      <a class="navbar-brand brand-logo me-auto" href="index.html"><img src="images/dbs-logo.jpg" alt="DBS" height="26"></a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topnav"
-              aria-controls="topnav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="topnav">
-        <!-- Search, centred in the top bar (js/search.js) -->
-        <form class="navbar-search my-2 my-md-0" role="search" id="navSearch" data-site-search autocomplete="off">
-          <div class="input-group">
-            <span class="input-group-text"><i class="bi bi-search"></i></span>
-            <input type="search" class="form-control" id="navSearchInput" placeholder="Search users and pages..." aria-label="Search users and pages">
-            <button class="btn btn-primary" type="submit">Search</button>
-          </div>
-          <div class="site-search-results list-group text-start shadow d-none" id="navSearchResults" aria-label="Search suggestions"></div>
-        </form>
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#"><i class="bi bi-bell"></i> <span class="badge rounded-pill text-bg-danger">3</span></a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-person-circle"></i> <span class="js-account-name">Account</span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="#">Profile</a></li>
-              <li><a class="dropdown-item" href="#">Settings</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="login.html"><i class="bi bi-box-arrow-right"></i> Log out</a></li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+<body class="top-nav-layout">
 
   <!--
-    Sidebar menu (the same on every page; js/layout.js adds the behaviour).
-    A sub-menu is a "sub-toggle" link plus a <div class="collapse submenu submenu-level-N">.
-    Links to "#" are placeholders.
+    Header with the main menu (same items as the sidebar on the other pages).
+    Top: a thin utility bar. Below: logo, menu, search and Log out.
+    "Forms" opens a wide panel (mega menu) with its pages in columns.
   -->
-  <nav class="sidebar" id="sidebar" aria-label="Main menu">
-    <ul class="nav flex-column sidebar-nav">
-      <li class="nav-item"><a class="nav-link" href="index.html"><i class="bi bi-house" aria-hidden="true"></i><span class="nav-label">Overview</span></a></li>
-      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-bar-chart" aria-hidden="true"></i><span class="nav-label">Reports</span></a></li>
-      <li class="nav-item"><a class="nav-link" href="index.html#users"><i class="bi bi-people" aria-hidden="true"></i><span class="nav-label">Users</span></a></li>
-      <li class="nav-item has-sub">
-        <a class="nav-link sub-toggle" href="#submenu-forms" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="submenu-forms"><i class="bi bi-ui-checks" aria-hidden="true"></i><span class="nav-label">Forms</span><i class="bi bi-chevron-down sub-caret" aria-hidden="true"></i></a>
-        <div class="collapse submenu submenu-level-1" id="submenu-forms">
-          <div class="submenu-title">Forms</div>
-          <ul class="nav flex-column">
-            <li class="nav-item has-sub">
-              <a class="nav-link sub-link sub-toggle" href="#submenu-registration" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="submenu-registration"><i class="bi bi-person-lines-fill" aria-hidden="true"></i><span class="nav-label">Registration Form</span><i class="bi bi-chevron-down sub-caret" aria-hidden="true"></i></a>
-              <div class="collapse submenu submenu-level-2" id="submenu-registration">
-                <ul class="nav flex-column">
-                  <li class="nav-item"><a class="nav-link sub-link" href="form.html"><i class="bi bi-file-earmark-text" aria-hidden="true"></i><span class="nav-label">Full Form</span></a></li>
-                  <li class="nav-item"><a class="nav-link sub-link" href="form.html#personal"><i class="bi bi-person-vcard" aria-hidden="true"></i><span class="nav-label">Personal Details</span></a></li>
-                  <li class="nav-item"><a class="nav-link sub-link" href="form.html#role-skills"><i class="bi bi-list-check" aria-hidden="true"></i><span class="nav-label">Role &amp; Skills</span></a></li>
-                  <li class="nav-item"><a class="nav-link sub-link" href="form.html#preferences"><i class="bi bi-toggles" aria-hidden="true"></i><span class="nav-label">Preferences</span></a></li>
-                  <li class="nav-item"><a class="nav-link sub-link" href="form.html#about-you"><i class="bi bi-chat-left-text" aria-hidden="true"></i><span class="nav-label">About You</span></a></li>
-                </ul>
-              </div>
-            </li>
-            <li class="nav-item"><a class="nav-link sub-link" href="form.html#date-time"><i class="bi bi-calendar-event" aria-hidden="true"></i><span class="nav-label">Date &amp; Time</span></a></li>
+  <header class="site-header fixed-top">
+    <div class="utility-bar">
+      <div class="container-xl d-flex justify-content-end align-items-center gap-3">
+        <a class="utility-link" href="#"><i class="bi bi-bell"></i> Notifications <span class="badge rounded-pill text-bg-danger">3</span></a>
+        <a class="utility-link d-none d-sm-inline" href="#"><i class="bi bi-question-circle"></i> Help &amp; Support</a>
+        <div class="dropdown">
+          <a class="utility-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle"></i> <span class="js-account-name">Account</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="login.html"><i class="bi bi-box-arrow-right"></i> Log out</a></li>
           </ul>
         </div>
-      </li>
-      <li class="nav-item"><a class="nav-link" href="approvals.html"><i class="bi bi-clipboard-check" aria-hidden="true"></i><span class="nav-label">My Approvals</span><span class="nav-badge badge rounded-pill text-bg-danger d-none" data-badge="pending-approvals"></span></a></li>
-      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-cart" aria-hidden="true"></i><span class="nav-label">Orders</span></a></li>
-      <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-gear" aria-hidden="true"></i><span class="nav-label">Settings</span></a></li>
-    </ul>
-  </nav>
-  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+      </div>
+    </div>
+
+    <nav class="navbar navbar-expand-lg main-nav" aria-label="Main menu">
+      <div class="container-xl">
+        <a class="navbar-brand me-4" href="index.html"><img src="images/dbs-logo.jpg" alt="DBS" class="header-logo"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topMenu"
+                aria-controls="topMenu" aria-expanded="false" aria-label="Show menu">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="topMenu">
+          <ul class="navbar-nav me-auto top-menu">
+            <li class="nav-item"><a class="nav-link" href="index.html" data-menu-link><span class="nav-label">Overview</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-menu-link><span class="nav-label">Reports</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="index.html#users" data-menu-link><span class="nav-label">Users</span></a></li>
+            <li class="nav-item dropdown mega-dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="formsMenu">
+                <span class="nav-label">Forms</span>
+              </a>
+              <div class="dropdown-menu mega-menu" aria-labelledby="formsMenu">
+                <div class="container-xl">
+                  <div class="row g-4">
+                    <div class="col-lg-4">
+                      <h6 class="mega-heading">Registration Form</h6>
+                      <ul class="list-unstyled mega-links">
+                        <li><a class="dropdown-item" href="form.html" data-menu-link data-trail="Forms › Registration Form"><i class="bi bi-file-earmark-text" aria-hidden="true"></i> <span class="nav-label">Full Form</span></a></li>
+                        <li><a class="dropdown-item" href="form.html#personal" data-menu-link data-trail="Forms › Registration Form"><i class="bi bi-person-vcard" aria-hidden="true"></i> <span class="nav-label">Personal Details</span></a></li>
+                        <li><a class="dropdown-item" href="form.html#role-skills" data-menu-link data-trail="Forms › Registration Form"><i class="bi bi-list-check" aria-hidden="true"></i> <span class="nav-label">Role &amp; Skills</span></a></li>
+                        <li><a class="dropdown-item" href="form.html#preferences" data-menu-link data-trail="Forms › Registration Form"><i class="bi bi-toggles" aria-hidden="true"></i> <span class="nav-label">Preferences</span></a></li>
+                        <li><a class="dropdown-item" href="form.html#about-you" data-menu-link data-trail="Forms › Registration Form"><i class="bi bi-chat-left-text" aria-hidden="true"></i> <span class="nav-label">About You</span></a></li>
+                      </ul>
+                    </div>
+                    <div class="col-lg-4">
+                      <h6 class="mega-heading">Scheduling</h6>
+                      <ul class="list-unstyled mega-links">
+                        <li><a class="dropdown-item" href="form.html#date-time" data-menu-link data-trail="Forms"><i class="bi bi-calendar-event" aria-hidden="true"></i> <span class="nav-label">Date &amp; Time</span></a></li>
+                      </ul>
+                    </div>
+                    <div class="col-lg-4">
+                      <div class="mega-card">
+                        <h6 class="mb-1">Send a request</h6>
+                        <p class="small text-body-secondary mb-3">Fill in the registration form, then follow it in My Approvals.</p>
+                        <a class="btn btn-danger btn-sm" href="form.html">Open the form <i class="bi bi-arrow-right"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="approvals.html" data-menu-link><span class="nav-label">My Approvals</span> <span class="badge rounded-pill text-bg-danger d-none" data-badge="pending-approvals"></span></a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-menu-link><span class="nav-label">Orders</span></a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-menu-link><span class="nav-label">Settings</span></a></li>
+          </ul>
+
+          <form class="header-search my-2 my-lg-0 me-lg-3" role="search" id="navSearch" data-site-search autocomplete="off">
+            <div class="input-group input-group-sm">
+              <input type="search" class="form-control" id="navSearchInput" placeholder="Search" aria-label="Search users and pages">
+              <button class="btn btn-outline-secondary" type="submit" aria-label="Search"><i class="bi bi-search"></i></button>
+            </div>
+            <div class="site-search-results list-group text-start shadow d-none" id="navSearchResults" aria-label="Search suggestions"></div>
+          </form>
+          <a class="btn btn-header-action" href="login.html"><i class="bi bi-box-arrow-right"></i> Log out</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
 
   <main class="main">
     <div class="d-flex align-items-baseline border-bottom pb-2 mb-4">

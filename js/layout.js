@@ -1,5 +1,6 @@
-// Shared page layout: adds behaviour to the sidebar menu written in each page's HTML,
-// and handles the menu toggle button.
+// Shared page layout: adds behaviour to the menu written in each page's HTML —
+// the sidebar (form.html, approvals.html) or the header menu (index.html) —
+// and handles the sidebar toggle button.
 //
 // Desktop (768px and wider)
 //   - The sidebar shows icons only by default; hover an icon to see its name.
@@ -36,8 +37,7 @@
     'pending-approvals': function () { return window.Requests ? window.Requests.pendingCount() : 0; }
   };
   function refreshBadges() {
-    if (!sidebar) return;
-    sidebar.querySelectorAll('[data-badge]').forEach(function (el) {
+    document.querySelectorAll('[data-badge]').forEach(function (el) {
       var counter = COUNTERS[el.dataset.badge];
       var n = 0;
       try { n = counter ? Number(counter()) || 0 : 0; } catch (e) { /* ignore a failing counter */ }
@@ -54,16 +54,7 @@
   // Highlight the link for the current page (and #section, if a link points at one),
   // plus every parent menu above it
   function markActive() {
-    var page = location.pathname.split('/').pop() || 'index.html';
-    var hash = location.hash;
-    var links = Array.prototype.slice.call(sidebar.querySelectorAll('.nav-link:not(.sub-toggle)'));
-    function parts(link) {
-      var href = link.getAttribute('href');
-      var i = href.indexOf('#');
-      return { page: i === -1 ? href : href.slice(0, i), hash: i === -1 ? '' : href.slice(i) };
-    }
-    var match = links.filter(function (l) { var p = parts(l); return p.page === page && hash && p.hash === hash; })[0] ||
-                links.filter(function (l) { var p = parts(l); return p.page === page && !p.hash; })[0];
+    var match = findCurrentLink(sidebar.querySelectorAll('.nav-link:not(.sub-toggle)'));
 
     sidebar.querySelectorAll('.active').forEach(function (el) { el.classList.remove('active'); el.removeAttribute('aria-current'); });
     if (!match) return;
@@ -115,20 +106,80 @@
     refresh();
   }
 
-  document.addEventListener('DOMContentLoaded', function () {
-    sidebar = document.getElementById('sidebar');
-    toggle = document.getElementById('sidebarToggle');
-    backdrop = document.getElementById('sidebarBackdrop');
-    if (!sidebar || !toggle) return;
+  // ---- Header menu (index.html): menu across the top instead of a sidebar --------------
+  function setUpHeaderMenu(menu) {
+    // Highlight the current page, and "Forms" when the current page is inside its panel
+    function markHeaderActive() {
+      menu.querySelectorAll('.active').forEach(function (el) { el.classList.remove('active'); el.removeAttribute('aria-current'); });
+      var match = findCurrentLink(menu.querySelectorAll('[data-menu-link]'));
+      if (!match) return;
+      match.classList.add('active');
+      match.setAttribute('aria-current', 'page');
+      var dropdown = match.closest('.dropdown');
+      if (dropdown) dropdown.querySelector('.dropdown-toggle').classList.add('active');
+    }
+    markHeaderActive();
+    window.addEventListener('hashchange', markHeaderActive);
 
+    // Wide screens with a mouse: open the Forms panel on hover as well as on click
+    var hover = window.matchMedia('(hover: hover) and (min-width: 992px)');
+    menu.querySelectorAll('.mega-dropdown').forEach(function (item) {
+      var dropdown = bootstrap.Dropdown.getOrCreateInstance(item.querySelector('[data-bs-toggle="dropdown"]'));
+      var timer;
+      item.addEventListener('mouseenter', function () {
+        if (!hover.matches) return;
+        clearTimeout(timer);
+        dropdown.show();
+      });
+      item.addEventListener('mouseleave', function () {
+        if (!hover.matches) return;
+        timer = setTimeout(function () { dropdown.hide(); }, 200);
+      });
+    });
+
+    // Choosing a link closes the phone menu
+    menu.addEventListener('click', function (e) {
+      var link = e.target.closest('[data-menu-link]');
+      if (!link) return;
+      if (link.getAttribute('href') === '#') e.preventDefault();
+      var collapse = menu.closest('.navbar-collapse');
+      if (collapse && collapse.classList.contains('show')) bootstrap.Collapse.getOrCreateInstance(collapse).hide();
+    });
+  }
+
+  // The link for the current page (and #section, if a link points at one)
+  function findCurrentLink(links) {
+    var page = location.pathname.split('/').pop() || 'index.html';
+    var hash = location.hash;
+    links = Array.prototype.slice.call(links);
+    function parts(link) {
+      var href = link.getAttribute('href');
+      var i = href.indexOf('#');
+      return { page: i === -1 ? href : href.slice(0, i), hash: i === -1 ? '' : href.slice(i) };
+    }
+    return links.filter(function (l) { var p = parts(l); return p.page === page && hash && p.hash === hash; })[0] ||
+           links.filter(function (l) { var p = parts(l); return p.page === page && !p.hash; })[0];
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
     // Show the signed-in user's name (set by login.html) in the top bar
     try {
       var user = sessionStorage.getItem('username');
       if (user) document.querySelectorAll('.js-account-name').forEach(function (el) { el.textContent = user; });
     } catch (e) { /* storage blocked */ }
+    refreshBadges();
+    // Counts changed in another tab (e.g. a request approved there)
+    window.addEventListener('storage', refreshBadges);
+
+    var headerMenu = document.querySelector('.top-menu');
+    if (headerMenu) setUpHeaderMenu(headerMenu);
+
+    sidebar = document.getElementById('sidebar');
+    toggle = document.getElementById('sidebarToggle');
+    backdrop = document.getElementById('sidebarBackdrop');
+    if (!sidebar || !toggle) return;
 
     addTooltips();
-    refreshBadges();
     markActive();
     refresh();
     // Turn on width animations only after the first paint, so the page doesn't animate on load
@@ -161,9 +212,6 @@
       if (isIconOnly()) closePopouts();
       if (phone.matches && root.classList.contains('sidebar-open')) { setPhoneOpen(false); toggle.focus(); }
     });
-
-    // Counts changed in another tab (e.g. a request approved there)
-    window.addEventListener('storage', refreshBadges);
 
     // Same-page links like form.html#date-time
     window.addEventListener('hashchange', markActive);
